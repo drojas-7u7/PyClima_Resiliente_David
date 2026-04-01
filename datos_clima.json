@@ -1,0 +1,408 @@
+[
+    {
+        "fecha": "2024-01-25",
+        "distrito": "Moncloa-Aravaca",
+        "zona": "Oeste",
+        "temp": 7.4,
+        "humedad": 82,
+        "viento": 1.35,
+        "lluvia": 0.2,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-02-14",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 11.2,
+        "humedad": 55,
+        "viento": 2.1,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-03-21",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 16.8,
+        "humedad": 42,
+        "viento": 5.4,
+        "lluvia": 0,
+        "alertas": [
+            "Viento fuerte"
+        ]
+    },
+    {
+        "fecha": "2024-04-10",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 19.5,
+        "humedad": 38,
+        "viento": 2.2,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-05-02",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 24.1,
+        "humedad": 30,
+        "viento": 1.8,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-06-15",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 29.3,
+        "humedad": 25,
+        "viento": 3.1,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-07-20",
+        "distrito": "Moncloa-Aravaca",
+        "zona": "Oeste",
+        "temp": 37.2,
+        "humedad": 12,
+        "viento": 1.5,
+        "lluvia": 0,
+        "alertas": [
+            "Ola de calor"
+        ]
+    },
+    {
+        "fecha": "2024-08-10",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 38.5,
+        "humedad": 10,
+        "viento": 2.4,
+        "lluvia": 0,
+        "alertas": [
+            "Alerta Roja - Calor"
+        ]
+    },
+    {
+        "fecha": "2024-09-05",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 25.4,
+        "humedad": 45,
+        "viento": 4.2,
+        "lluvia": 2.5,
+        "alertas": [
+            "Tormenta"
+        ]
+    },
+    {
+        "fecha": "2024-10-15",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 18.2,
+        "humedad": 65,
+        "viento": 2.7,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2024-11-20",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 12.1,
+        "humedad": 88,
+        "viento": 0.8,
+        "lluvia": 1.2,
+        "alertas": [
+            "Niebla"
+        ]
+    },
+    {
+        "fecha": "2024-12-25",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 5.4,
+        "humedad": 90,
+        "viento": 1.1,
+        "lluvia": 0,
+        "alertas": [
+            "Helada"
+        ]
+    },
+    {
+        "fecha": "2025-01-01",
+        "distrito": "Moncloa-Aravaca",
+        "zona": "Oeste",
+        "temp": 6.8,
+        "humedad": 75,
+        "viento": 0.62,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-01-15",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 4.2,
+        "humedad": 80,
+        "viento": 1.25,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-02-02",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 9.1,
+        "humedad": 60,
+        "viento": 3.4,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-02-28",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 13.5,
+        "humedad": 52,
+        "viento": 4.5,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-03-15",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 15.2,
+        "humedad": 48,
+        "viento": 2.8,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-04-01",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 18.7,
+        "humedad": 40,
+        "viento": 2.1,
+        "lluvia": 0.5,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-05-15",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 23.8,
+        "humedad": 32,
+        "viento": 3.7,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-06-01",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 27.6,
+        "humedad": 28,
+        "viento": 2.5,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-06-24",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 32.1,
+        "humedad": 20,
+        "viento": 4.1,
+        "lluvia": 0,
+        "alertas": [
+            "Calor"
+        ]
+    },
+    {
+        "fecha": "2025-07-04",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 36.4,
+        "humedad": 15,
+        "viento": 2.3,
+        "lluvia": 0,
+        "alertas": [
+            "Naranja Calor"
+        ]
+    },
+    {
+        "fecha": "2025-07-31",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 39.1,
+        "humedad": 11,
+        "viento": 1.8,
+        "lluvia": 0,
+        "alertas": [
+            "Riesgo Incendio"
+        ]
+    },
+    {
+        "fecha": "2025-09-12",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 28.9,
+        "humedad": 34,
+        "viento": 6.8,
+        "lluvia": 12.4,
+        "alertas": [
+            "DANA"
+        ]
+    },
+    {
+        "fecha": "2025-09-28",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 22.1,
+        "humedad": 50,
+        "viento": 2.1,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-10-10",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 19.8,
+        "humedad": 62,
+        "viento": 1.7,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-10-31",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 14.5,
+        "humedad": 78,
+        "viento": 2.9,
+        "lluvia": 4.2,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-11-15",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 11.2,
+        "humedad": 85,
+        "viento": 0.5,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2025-12-05",
+        "distrito": "Moncloa-Aravaca",
+        "zona": "Oeste",
+        "temp": 8.1,
+        "humedad": 82,
+        "viento": 1.4,
+        "lluvia": 1.5,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-03-18",
+        "distrito": "Barajas",
+        "zona": "Este",
+        "temp": 17.6,
+        "humedad": 42,
+        "viento": 3.1,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-03-31",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 20.4,
+        "humedad": 38,
+        "viento": 1.9,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-04-01",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 22.5,
+        "humedad": 30,
+        "viento": 5.0,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-04-15",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 23.8,
+        "humedad": 28,
+        "viento": 2.4,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-05-01",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 25.1,
+        "humedad": 25,
+        "viento": 3.3,
+        "lluvia": 0,
+        "alertas": []
+    },
+    {
+        "fecha": "2026-06-21",
+        "distrito": "Retiro",
+        "zona": "Centro",
+        "temp": 33.7,
+        "humedad": 15,
+        "viento": 2.6,
+        "lluvia": 0,
+        "alertas": [
+            "Aviso Calor"
+        ]
+    },
+    {
+        "fecha": "2026-07-01",
+        "distrito": "Villaverde",
+        "zona": "Sur",
+        "temp": 36.8,
+        "humedad": 12,
+        "viento": 1.7,
+        "lluvia": 0,
+        "alertas": [
+            "Naranja"
+        ]
+    },
+    {
+        "fecha": "2026-07-15",
+        "distrito": "Villa de Vallecas",
+        "zona": "Sureste",
+        "temp": 38.2,
+        "humedad": 10,
+        "viento": 3.5,
+        "lluvia": 0,
+        "alertas": [
+            "Extremo"
+        ]
+    },
+    {
+        "fecha": "2026-08-01",
+        "distrito": "Fuencarral-El Pardo",
+        "zona": "Norte",
+        "temp": 35.4,
+        "humedad": 14,
+        "viento": 2.2,
+        "lluvia": 0,
+        "alertas": []
+    }
+]
