@@ -1,13 +1,15 @@
 [
     {
         "fecha": "2024-01-25",
-        "distrito": "Moncloa-Aravaca",
+        "distrito": "Villaverde",
         "zona": "Oeste",
-        "temp": 7.4,
-        "humedad": 82,
-        "viento": 1.35,
-        "lluvia": 0.2,
-        "alertas": []
+        "temp": 25.0,
+        "humedad": 85,
+        "viento": 33.0,
+        "lluvia": 36.0,
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2024-02-14",
@@ -17,7 +19,9 @@
         "humedad": 55,
         "viento": 2.1,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2024-03-21",
@@ -29,7 +33,9 @@
         "lluvia": 0,
         "alertas": [
             "Viento fuerte"
-        ]
+        ],
+        "registrado_por": "850369",
+        "editado": false
     },
     {
         "fecha": "2024-04-10",
@@ -39,7 +45,9 @@
         "humedad": 38,
         "viento": 2.2,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "850369",
+        "editado": false
     },
     {
         "fecha": "2024-05-02",
@@ -49,7 +57,9 @@
         "humedad": 30,
         "viento": 1.8,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "118273",
+        "editado": false
     },
     {
         "fecha": "2024-06-15",
@@ -59,7 +69,9 @@
         "humedad": 25,
         "viento": 3.1,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "118273",
+        "editado": false
     },
     {
         "fecha": "2024-07-20",
@@ -71,7 +83,9 @@
         "lluvia": 0,
         "alertas": [
             "Ola de calor"
-        ]
+        ],
+        "registrado_por": "036939",
+        "editado": false
     },
     {
         "fecha": "2024-08-10",
@@ -83,7 +97,9 @@
         "lluvia": 0,
         "alertas": [
             "Alerta Roja - Calor"
-        ]
+        ],
+        "registrado_por": "036939",
+        "editado": false
     },
     {
         "fecha": "2024-09-05",
@@ -95,7 +111,9 @@
         "lluvia": 2.5,
         "alertas": [
             "Tormenta"
-        ]
+        ],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2024-10-15",
@@ -105,7 +123,9 @@
         "humedad": 65,
         "viento": 2.7,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "28736",
+        "editado": false
     },
     {
         "fecha": "2024-11-20",
@@ -117,7 +137,9 @@
         "lluvia": 1.2,
         "alertas": [
             "Niebla"
-        ]
+        ],
+        "registrado_por": "273645",
+        "editado": false
     },
     {
         "fecha": "2024-12-25",
@@ -129,7 +151,9 @@
         "lluvia": 0,
         "alertas": [
             "Helada"
-        ]
+        ],
+        "registrado_por": "273645",
+        "editado": false
     },
     {
         "fecha": "2025-01-01",
@@ -139,7 +163,9 @@
         "humedad": 75,
         "viento": 0.62,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2025-01-15",
@@ -149,7 +175,9 @@
         "humedad": 80,
         "viento": 1.25,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2025-02-02",
@@ -159,7 +187,9 @@
         "humedad": 60,
         "viento": 3.4,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2025-02-28",
@@ -169,7 +199,9 @@
         "humedad": 52,
         "viento": 4.5,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2025-03-15",
@@ -179,7 +211,9 @@
         "humedad": 48,
         "viento": 2.8,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "036673",
+        "editado": false
     },
     {
         "fecha": "2025-04-01",
@@ -189,7 +223,9 @@
         "humedad": 40,
         "viento": 2.1,
         "lluvia": 0.5,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "036673",
+        "editado": false
     },
     {
         "fecha": "2025-05-15",
@@ -199,7 +235,9 @@
         "humedad": 32,
         "viento": 3.7,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "036673",
+        "editado": false
     },
     {
         "fecha": "2025-06-01",
@@ -209,7 +247,9 @@
         "humedad": 28,
         "viento": 2.5,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "623035",
+        "editado": false
     },
     {
         "fecha": "2025-06-24",
@@ -221,7 +261,9 @@
         "lluvia": 0,
         "alertas": [
             "Calor"
-        ]
+        ],
+        "registrado_por": "623035",
+        "editado": false
     },
     {
         "fecha": "2025-07-04",
@@ -233,7 +275,9 @@
         "lluvia": 0,
         "alertas": [
             "Naranja Calor"
-        ]
+        ],
+        "registrado_por": "036673",
+        "editado": false
     },
     {
         "fecha": "2025-07-31",
@@ -245,7 +289,9 @@
         "lluvia": 0,
         "alertas": [
             "Riesgo Incendio"
-        ]
+        ],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2025-09-12",
@@ -257,7 +303,9 @@
         "lluvia": 12.4,
         "alertas": [
             "DANA"
-        ]
+        ],
+        "registrado_por": "036673",
+        "editado": false
     },
     {
         "fecha": "2025-09-28",
@@ -267,7 +315,9 @@
         "humedad": 50,
         "viento": 2.1,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "273645",
+        "editado": false
     },
     {
         "fecha": "2025-10-10",
@@ -277,7 +327,9 @@
         "humedad": 62,
         "viento": 1.7,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "118273",
+        "editado": false
     },
     {
         "fecha": "2025-10-31",
@@ -287,7 +339,9 @@
         "humedad": 78,
         "viento": 2.9,
         "lluvia": 4.2,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "118273",
+        "editado": false
     },
     {
         "fecha": "2025-11-15",
@@ -297,7 +351,9 @@
         "humedad": 85,
         "viento": 0.5,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "850369",
+        "editado": false
     },
     {
         "fecha": "2025-12-05",
@@ -307,7 +363,9 @@
         "humedad": 82,
         "viento": 1.4,
         "lluvia": 1.5,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "850369",
+        "editado": false
     },
     {
         "fecha": "2026-03-18",
@@ -317,7 +375,9 @@
         "humedad": 42,
         "viento": 3.1,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2026-03-31",
@@ -327,7 +387,9 @@
         "humedad": 38,
         "viento": 1.9,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2026-04-01",
@@ -337,7 +399,9 @@
         "humedad": 30,
         "viento": 5.0,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "623035",
+        "editado": false
     },
     {
         "fecha": "2026-04-15",
@@ -347,7 +411,9 @@
         "humedad": 28,
         "viento": 2.4,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "623035",
+        "editado": false
     },
     {
         "fecha": "2026-05-01",
@@ -357,7 +423,9 @@
         "humedad": 25,
         "viento": 3.3,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "623035",
+        "editado": false
     },
     {
         "fecha": "2026-06-21",
@@ -369,7 +437,9 @@
         "lluvia": 0,
         "alertas": [
             "Aviso Calor"
-        ]
+        ],
+        "registrado_por": "182736",
+        "editado": false
     },
     {
         "fecha": "2026-07-01",
@@ -381,7 +451,9 @@
         "lluvia": 0,
         "alertas": [
             "Naranja"
-        ]
+        ],
+        "registrado_por": "273645",
+        "editado": false
     },
     {
         "fecha": "2026-07-15",
@@ -393,7 +465,9 @@
         "lluvia": 0,
         "alertas": [
             "Extremo"
-        ]
+        ],
+        "registrado_por": "100375",
+        "editado": false
     },
     {
         "fecha": "2026-08-01",
@@ -403,6 +477,8 @@
         "humedad": 14,
         "viento": 2.2,
         "lluvia": 0,
-        "alertas": []
+        "alertas": [],
+        "registrado_por": "850369",
+        "editado": false
     }
 ]

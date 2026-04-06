@@ -10,6 +10,8 @@ Instrucciones para el equipo:
 """
 
 from datetime import datetime
+import json
+import difflib
 
 def validar_temperatura():
     """
@@ -111,18 +113,61 @@ def validar_fecha():
 
 def validar_zona():
     """
-    Solicita el nombre de la zona y verifica que no quede en blanco.
-    
-    DEV 1: Llama a esta función sin parámetros.
-    Retorna: Un string con el nombre de la zona.
+    Solicita el nombre de la zona y lo coteja con config.json.
+    - No distingue mayúsculas/minúsculas.
+    - Devuelve el nombre exacto oficial (ej. si escribes 'retiro', devuelve 'Retiro').
+    - Sugiere el nombre si hay un error tipográfico.
     """
+    # 1. Cargar el archivo de configuración (Sugerencia de Robustez)
+    try:
+        with open('config.json', 'r', encoding='utf-8') as archivo:
+            config = json.load(archivo)
+            distritos_oficiales = config.get("distritos_oficiales", [])
+    except FileNotFoundError:
+        print("❌ Error crítico: No se encuentra el archivo 'config.json'.")
+        print("⚠️ Avisa al equipo técnico para restaurar el archivo.")
+        return None 
+    except json.JSONDecodeError:
+        print("❌ Error crítico: El archivo 'config.json' está corrupto.")
+        return None
+
+    # Creamos un "diccionario traductor" para buscar en minúsculas pero recuperar la versión original
+    mapa_distritos = {distrito.lower(): distrito for distrito in distritos_oficiales}
+    lista_minusculas = list(mapa_distritos.keys())
+
     while True:
-        zona = input("Introduce la zona (ej: Retiro, Centro): ").strip()
-        if not zona:
+        # 2. Pedimos el dato y comprobamos que no esté vacío
+        zona_input = input("Introduce la zona (ej: Retiro, Centro): ").strip()
+        
+        if not zona_input:
             print("❌ Error: La zona no puede estar vacía.")
             print("🔄 Inténtalo de nuevo.\n")
+            continue
+
+        zona_lower = zona_input.lower()
+
+        # 3. Comprobación exacta (ignorando mayúsculas)
+        if zona_lower in mapa_distritos:
+            return mapa_distritos[zona_lower] # Devuelve el nombre oficial exacto
+
+        # 4. Magia de corrección tipográfica (Sugerencias)
+        # Busca coincidencias con al menos un 60% de similitud
+        sugerencias = difflib.get_close_matches(zona_lower, lista_minusculas, n=1, cutoff=0.6)
+
+        if sugerencias:
+            # Si encuentra algo parecido, recuperamos el nombre oficial
+            zona_sugerida = mapa_distritos[sugerencias[0]]
+            confirmacion = input(f"🤔 No encuentro '{zona_input}'. ¿Querías decir '{zona_sugerida}'? (s/n): ").strip().lower()
+            
+            if confirmacion == 's':
+                return zona_sugerida
+            else:
+                print("❌ Entendido. Zona descartada.")
         else:
-            return zona
+            # Si lo que ha escrito no se parece a nada de Madrid
+            print(f"❌ Error: '{zona_input}' no coincide con ningún distrito oficial de Madrid.")
+            
+        print("🔄 Inténtalo de nuevo.\n")
 
 
 def validar_duplicado(nueva_fecha, nueva_zona, historial):
@@ -139,3 +184,15 @@ def validar_duplicado(nueva_fecha, nueva_zona, historial):
             return True 
             
     return False
+
+# --- ZONA DE PRUEBAS TEMPORAL ---
+# Este bloque solo se ejecutará si lanzas este archivo directamente.
+# Si el DEV 1 importa tus funciones en su menu.py, esto no le molestará.
+if __name__ == "__main__":
+    print("\n--- 🧪 TEST DE VALIDACIÓN DE ZONA ---")
+    print("Vamos a probar la conexión con config.json y el autocompletado.")
+    
+    resultado_zona = validar_zona()
+    
+    if resultado_zona:
+        print(f"\n✅ ÉXITO: El sistema ha guardado la zona oficial -> '{resultado_zona}'")
