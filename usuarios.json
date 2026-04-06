@@ -1,0 +1,50 @@
+[
+    {
+        "nombre": "Silvia",
+        "apellidos": "Monsalve",
+        "num_empleado": "100375",
+        "password": "Mesa2026"
+    },
+    {
+        "nombre": "Mariajose",
+        "apellidos": "Alvarez",
+        "num_empleado": "850369",
+        "password": "Mesa2025"
+    },
+    {
+        "nombre": "Maria Isabel",
+        "apellidos": "Durango",
+        "num_empleado": "036939",
+        "password": "Mesa2024"
+    },
+    {
+        "nombre": "Maria",
+        "apellidos": "Roldan",
+        "num_empleado": "036673",
+        "password": "Mesa2023"
+    },
+    {
+        "nombre": "Jose Gregorio",
+        "apellidos": "Melo",
+        "num_empleado": "623035",
+        "password": "Mesa2022"
+    },
+    {
+        "nombre": "David",
+        "apellidos": "Rojas",
+        "num_empleado": "182736",
+        "password": "Mesa2021"
+    },
+    {
+        "nombre": "Alexander",
+        "apellidos": "Carrasco",
+        "num_empleado": "273645",
+        "password": "Mesa2019"
+    },
+    {
+        "nombre": "Pilar",
+        "apellidos": "Rodriguez",
+        "num_empleado": "118273",
+        "password": "2018mEsa"
+    }
+]
