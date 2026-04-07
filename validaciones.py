@@ -184,15 +184,3 @@ def validar_duplicado(nueva_fecha, nueva_zona, historial):
             return True 
             
     return False
-
-# --- ZONA DE PRUEBAS TEMPORAL ---
-# Este bloque solo se ejecutará si lanzas este archivo directamente.
-# Si el DEV 1 importa tus funciones en su menu.py, esto no le molestará.
-if __name__ == "__main__":
-    print("\n--- 🧪 TEST DE VALIDACIÓN DE ZONA ---")
-    print("Vamos a probar la conexión con config.json y el autocompletado.")
-    
-    resultado_zona = validar_zona()
-    
-    if resultado_zona:
-        print(f"\n✅ ÉXITO: El sistema ha guardado la zona oficial -> '{resultado_zona}'")
