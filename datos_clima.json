@@ -480,5 +480,32 @@
         "alertas": [],
         "registrado_por": "850369",
         "editado": false
+    },
+    {
+        "fecha": "2026-04-8",
+        "distrito": "Centro",
+        "temperatura": 33.0,
+        "temp": 33.0,
+        "humedad": 33.0,
+        "viento": 33.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2026-04-09",
+        "distrito": "Centro",
+        "temperatura": 40.0,
+        "temp": 40.0,
+        "humedad": 40.0,
+        "viento": 40.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "CRÍTICO: Alerta Roja. Calor extremo (40.0°C).",
+            "VIENTO: Rachas de 40.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "182736",
+        "editado": false
     }
 ]
