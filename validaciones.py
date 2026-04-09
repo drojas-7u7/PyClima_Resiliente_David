@@ -23,7 +23,9 @@ def validar_temperatura():
     """
     while True:
         try:
-            entrada = input("Introduce la temperatura (-20 a 50 °C): ")
+            entrada = input("Introduce la temperatura (-20 a 50 °C) [o 'c' para cancelar]: ").strip()
+            if entrada.lower() == 'c': raise KeyboardInterrupt # Simula la cancelación
+            
             temp = float(entrada)
             
             if -20 <= temp <= 50:
@@ -47,7 +49,9 @@ def validar_humedad():
     """
     while True:
         try:
-            entrada = input("Introduce la humedad (0 a 100%): ")
+            entrada = input("Introduce la humedad (0 a 100%) [o 'c' para cancelar]: ").strip()
+            if entrada.lower() == 'c': raise KeyboardInterrupt
+            
             humedad = float(entrada)
             
             if 0 <= humedad <= 100:
@@ -71,7 +75,9 @@ def validar_viento():
     """
     while True:
         try:
-            entrada = input("Introduce la velocidad del viento (0 a 150 km/h): ")
+            entrada = input("Introduce la velocidad del viento (0 a 150 km/h) [o 'c' para cancelar]: ").strip()
+            if entrada.lower() == 'c': raise KeyboardInterrupt
+            
             viento = float(entrada)
             
             if 0 <= viento <= 150:
@@ -94,7 +100,8 @@ def validar_fecha():
     Retorna: Un string con la fecha correcta (ej. '2026-04-06').
     """
     while True:
-        entrada = input("Introduce la fecha (formato AAAA-MM-DD, ej: 2026-04-06): ").strip()
+        entrada = input("Introduce la fecha (formato AAAA-MM-DD, ej: 2026-04-06) [o 'c' para cancelar]: ").strip()
+        if entrada.lower() == 'c': raise KeyboardInterrupt
         
         if not entrada:
             print("❌ Error: La fecha no puede estar vacía.")
@@ -137,7 +144,8 @@ def validar_zona():
 
     while True:
         # 2. Pedimos el dato y comprobamos que no esté vacío
-        zona_input = input("Introduce la zona (ej: Retiro, Centro): ").strip()
+        zona_input = input("Introduce la zona (ej: Retiro, Centro) [o 'c' para cancelar]: ").strip()
+        if zona_input.lower() == 'c': raise KeyboardInterrupt
         
         if not zona_input:
             print("❌ Error: La zona no puede estar vacía.")
