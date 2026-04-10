@@ -1,6 +1,6 @@
 [
     {
-        "fecha": "2024-01-25",
+        "fecha": "2025-12-01",
         "distrito": "Villaverde",
         "zona": "Oeste",
         "temp": 25.0,
@@ -12,7 +12,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-02-14",
+        "fecha": "2025-12-02",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 11.2,
@@ -24,7 +24,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-03-21",
+        "fecha": "2025-12-03",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 16.8,
@@ -38,7 +38,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-04-10",
+        "fecha": "2025-12-04",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 19.5,
@@ -50,7 +50,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-05-02",
+        "fecha": "2025-12-05",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 24.1,
@@ -62,7 +62,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-06-15",
+        "fecha": "2025-12-06",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 29.3,
@@ -74,7 +74,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-07-20",
+        "fecha": "2025-12-07",
         "distrito": "Moncloa-Aravaca",
         "zona": "Oeste",
         "temp": 37.2,
@@ -88,7 +88,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-08-10",
+        "fecha": "2025-12-08",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 38.5,
@@ -102,7 +102,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-09-05",
+        "fecha": "2025-12-09",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 25.4,
@@ -116,7 +116,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-10-15",
+        "fecha": "2025-12-10",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 18.2,
@@ -128,7 +128,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-11-20",
+        "fecha": "2025-12-11",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 12.1,
@@ -142,7 +142,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-12-25",
+        "fecha": "2025-12-12",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 5.4,
@@ -156,7 +156,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-01-01",
+        "fecha": "2025-12-13",
         "distrito": "Moncloa-Aravaca",
         "zona": "Oeste",
         "temp": 6.8,
@@ -168,7 +168,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-01-15",
+        "fecha": "2025-12-14",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 4.2,
@@ -180,7 +180,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-02-02",
+        "fecha": "2025-12-15",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 9.1,
@@ -192,7 +192,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-02-28",
+        "fecha": "2025-12-16",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 13.5,
@@ -204,7 +204,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-03-15",
+        "fecha": "2025-12-17",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 15.2,
@@ -216,7 +216,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-04-01",
+        "fecha": "2025-12-18",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 18.7,
@@ -228,7 +228,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-05-15",
+        "fecha": "2025-12-19",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 23.8,
@@ -240,7 +240,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-06-01",
+        "fecha": "2025-12-20",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 27.6,
@@ -252,7 +252,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-06-24",
+        "fecha": "2025-12-21",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 32.1,
@@ -266,7 +266,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-07-04",
+        "fecha": "2025-12-22",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 36.4,
@@ -280,7 +280,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-07-31",
+        "fecha": "2025-12-23",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 39.1,
@@ -294,7 +294,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-09-12",
+        "fecha": "2025-12-24",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 28.9,
@@ -308,7 +308,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-09-28",
+        "fecha": "2025-12-25",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 22.1,
@@ -320,7 +320,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-10-10",
+        "fecha": "2025-12-26",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 19.8,
@@ -332,7 +332,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-10-31",
+        "fecha": "2025-12-27",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 14.5,
@@ -344,7 +344,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-11-15",
+        "fecha": "2025-12-28",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 11.2,
@@ -356,7 +356,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-12-05",
+        "fecha": "2025-12-29",
         "distrito": "Moncloa-Aravaca",
         "zona": "Oeste",
         "temp": 8.1,
@@ -368,7 +368,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-03-18",
+        "fecha": "2025-12-30",
         "distrito": "Barajas",
         "zona": "Este",
         "temp": 17.6,
@@ -380,7 +380,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-03-31",
+        "fecha": "2025-12-31",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 20.4,
@@ -392,7 +392,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-04-01",
+        "fecha": "2026-01-01",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 22.5,
@@ -404,7 +404,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-04-15",
+        "fecha": "2026-01-02",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 23.8,
@@ -416,7 +416,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-05-01",
+        "fecha": "2026-01-03",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 25.1,
@@ -428,7 +428,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-06-21",
+        "fecha": "2026-01-04",
         "distrito": "Retiro",
         "zona": "Centro",
         "temp": 33.7,
@@ -442,7 +442,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-07-01",
+        "fecha": "2026-01-05",
         "distrito": "Villaverde",
         "zona": "Sur",
         "temp": 36.8,
@@ -456,7 +456,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-07-15",
+        "fecha": "2026-01-06",
         "distrito": "Villa de Vallecas",
         "zona": "Sureste",
         "temp": 38.2,
@@ -470,7 +470,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-08-01",
+        "fecha": "2026-01-07",
         "distrito": "Fuencarral-El Pardo",
         "zona": "Norte",
         "temp": 35.4,
@@ -482,7 +482,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-04-8",
+        "fecha": "2026-01-08",
         "distrito": "Centro",
         "temperatura": 33.0,
         "temp": 33.0,
@@ -494,7 +494,7 @@
         "editado": false
     },
     {
-        "fecha": "2026-04-09",
+        "fecha": "2026-01-09",
         "distrito": "Centro",
         "temperatura": 40.0,
         "temp": 40.0,
@@ -509,7 +509,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-02-22",
+        "fecha": "2026-01-10",
         "distrito": "Latina",
         "temperatura": 43.0,
         "temp": 43.0,
@@ -524,7 +524,7 @@
         "editado": false
     },
     {
-        "fecha": "2021-01-10",
+        "fecha": "2026-01-11",
         "distrito": "Salamanca",
         "temperatura": 24.0,
         "temp": 24.0,
@@ -536,7 +536,7 @@
         "editado": false
     },
     {
-        "fecha": "2020-03-10",
+        "fecha": "2026-01-12",
         "distrito": "Arganzuela",
         "temperatura": 30.0,
         "temp": 30.0,
@@ -548,7 +548,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-03-09",
+        "fecha": "2026-01-13",
         "distrito": "Carabanchel",
         "temperatura": 36.0,
         "temp": 36.0,
@@ -563,7 +563,7 @@
         "editado": false
     },
     {
-        "fecha": "2020-03-10",
+        "fecha": "2026-01-14",
         "distrito": "San Blas-Canillejas",
         "temperatura": 26.0,
         "temp": 26.0,
@@ -575,7 +575,7 @@
         "editado": false
     },
     {
-        "fecha": "2018-06-10",
+        "fecha": "2026-01-15",
         "distrito": "Chamartín",
         "temperatura": -3.0,
         "temp": -3.0,
@@ -589,7 +589,7 @@
         "editado": false
     },
     {
-        "fecha": "2014-05-03",
+        "fecha": "2026-01-16",
         "distrito": "Chamberí",
         "temperatura": -6.0,
         "temp": -6.0,
@@ -603,7 +603,7 @@
         "editado": false
     },
     {
-        "fecha": "2023-01-02",
+        "fecha": "2026-01-17",
         "distrito": "Ciudad Lineal",
         "temperatura": 16.0,
         "temp": 16.0,
@@ -617,7 +617,7 @@
         "editado": false
     },
     {
-        "fecha": "2015-05-08",
+        "fecha": "2026-01-18",
         "distrito": "Hortaleza",
         "temperatura": 29.0,
         "temp": 29.0,
@@ -629,7 +629,7 @@
         "editado": false
     },
     {
-        "fecha": "2013-12-31",
+        "fecha": "2026-01-19",
         "distrito": "Moratalaz",
         "temperatura": 36.0,
         "temp": 36.0,
@@ -643,7 +643,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-06-04",
+        "fecha": "2026-01-20",
         "distrito": "Tetuán",
         "temperatura": 36.0,
         "temp": 36.0,
@@ -657,7 +657,7 @@
         "editado": false
     },
     {
-        "fecha": "2024-03-05",
+        "fecha": "2026-01-21",
         "distrito": "Usera",
         "temperatura": 38.0,
         "temp": 38.0,
@@ -671,7 +671,7 @@
         "editado": false
     },
     {
-        "fecha": "2025-11-02",
+        "fecha": "2026-01-22",
         "distrito": "Vicálvaro",
         "temperatura": 29.0,
         "temp": 29.0,
@@ -682,6 +682,49 @@
             "VIENTO: Rachas de 100.0 km/h. Riesgo en parques."
         ],
         "registrado_por": "623035",
+        "editado": false
+    },
+    {
+        "fecha": "2026-01-23",
+        "distrito": "Villaverde",
+        "temperatura": 38.0,
+        "temp": 38.0,
+        "humedad": 10.0,
+        "viento": 65.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (38.0°C).",
+            "VIENTO: Rachas de 65.0 km/h. Riesgo en parques.",
+            "SEQUEDAD: Humedad muy baja (10.0%). Riesgo de incendio."
+        ],
+        "registrado_por": "100375",
+        "editado": false
+    },
+    {
+        "fecha": "2026-01-24",
+        "distrito": "Centro",
+        "temperatura": 39.0,
+        "temp": 39.0,
+        "humedad": 10.0,
+        "viento": 34.0,
+        "lluvia": 12.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (39.0°C).",
+            "SEQUEDAD: Humedad muy baja (10.0%). Riesgo de incendio."
+        ],
+        "registrado_por": "100375",
+        "editado": true
+    },
+    {
+        "fecha": "2026-01-25",
+        "distrito": "Chamberí",
+        "temperatura": 21.0,
+        "temp": 21.0,
+        "humedad": 31.0,
+        "viento": 31.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "100375",
         "editado": false
     }
 ]

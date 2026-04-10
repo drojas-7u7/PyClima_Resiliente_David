@@ -9,16 +9,16 @@ import validaciones
 import alertas
 import persistencia
 import auth
+import analitica
 from datetime import datetime
 
 class InterfazPyClima:
-    """Interfaz intuitiva y robusta del Sistema PyClima"""
     
     def __init__(self, ruta_datos="datos_clima.json", usuario_actual=None):
         self.ruta_datos = ruta_datos
         self.datos = self._cargar_datos()
         self.zonas_validas = self._obtener_zonas()
-        self.usuario_actual = usuario_actual  # Guardamos la identidad del operario en la clase
+        self.usuario_actual = usuario_actual  # Guardamos la identidad del operario
         
     def _cargar_datos(self):
         """Carga datos usando el módulo oficial de persistencia"""
@@ -39,15 +39,16 @@ class InterfazPyClima:
                 return True
         return False
     
-    def _analizar_alertas(self, temperatura, humedad, viento):
-        """Analiza y retorna alertas climáticas locales para visualización"""
-        alertas = []
-        if temperatura >= 35: alertas.append(f"🔴 ALERTA DE CALOR: {temperatura}°C")
-        elif temperatura >= 30: alertas.append(f"🟡 ADVERTENCIA DE CALOR: {temperatura}°C")
-        if viento >= 60: alertas.append(f"🔴 ALERTA DE VIENTO: {viento} km/h")
-        elif viento >= 40: alertas.append(f"🟡 ADVERTENCIA DE VIENTO: {viento} km/h")
-        if humedad >= 90: alertas.append(f"🔴 ALERTA DE LLUVIA: Humedad {humedad}%")
-        return alertas
+    def _analizar_alertas(self, temperatura, humedad, viento, lluvia=0):
+        """Usa la lógica oficial de alertas.py para mantener coherencia en toda la interfaz."""
+        umbrales = persistencia.obtener_umbrales_alerta()
+        datos_registro = {
+            "temperatura": temperatura,
+            "humedad": humedad,
+            "viento": viento,
+            "lluvia": lluvia
+        }
+        return alertas.evaluar_alertas(datos_registro, umbrales)
     
     def _mostrar_encabezado(self, titulo):
         print("\n" + "="*50)
@@ -56,35 +57,7 @@ class InterfazPyClima:
     
     def _mostrar_separador(self):
         print("-" * 50)
-    
-    def menu_principal(self):
-        """Menú principal del sistema"""
-        while True:
-            self._mostrar_encabezado("🌡️  SISTEMA PYCLIMA RESILIENTE v3.0")
-            print("1. 📝 Registrar Datos Climáticos")
-            print("2. 📊 Consultar Datos (Por Zona)")
-            print("3. 📈 Ver Histórico (Todas las Zonas)")
-            print("4. 🚨 Alertas Activas")
-            print("5. 🚪 Salir")
-            self._mostrar_separador()
-            
-            opcion = input("Seleccione una opción (1-5): ").strip()
-            
-            if opcion == "1":
-                self.registrar_datos()
-            elif opcion == "2":
-                self.consultar_datos()
-            elif opcion == "3":
-                self.ver_historico()
-            elif opcion == "4":
-                self.mostrar_panel_alertas()
-            elif opcion == "5":
-                self.salir()
-                break
-            else:
-                print("❌ Opción no válida. Intente de nuevo.")
-                input("Presione Enter para continuar...")
-    
+
     def registrar_datos(self):
         """Flujo completo de registro con validaciones"""
         self._mostrar_encabezado("📝 REGISTRAR NUEVOS DATOS CLIMÁTICOS")
@@ -210,23 +183,6 @@ class InterfazPyClima:
                     exit() # Cierra el programa por completo
                 # Si elige "1", el bucle while True vuelve a empezar solo
 
-    def _menu_consultar_zona(self):
-        """Lógica extraída para buscar por zona"""
-        self.zonas_validas = self._obtener_zonas()
-        print("\n📍 Zonas disponibles:")
-        for i, zona in enumerate(self.zonas_validas, 1): 
-            print(f"   {i}. {zona}")
-        
-        try:
-            seleccion = int(input("\nSeleccione una zona (número): ")) - 1
-            if 0 <= seleccion < len(self.zonas_validas):
-                zona_seleccionada = self.zonas_validas[seleccion]
-                self._mostrar_datos_zona(zona_seleccionada)
-            else:
-                print("❌ Selección inválida")
-        except ValueError:
-            print("❌ Ingrese un número válido")
-
     def _menu_consultar_fecha(self):
         """Lógica extraída para buscar por fecha exacta"""
         print("\n📅 BÚSQUEDA POR FECHA")
@@ -246,7 +202,7 @@ class InterfazPyClima:
                 print(f"   💧 Humedad: {reg.get('humedad', 0)}%")
                 print(f"   💨 Viento: {reg.get('viento', 0)} km/h")
                 
-                alertas_locales = self._analizar_alertas(temp, reg.get('humedad', 0), reg.get('viento', 0))
+                alertas_locales = self._analizar_alertas(temp, reg.get('humedad', 0), reg.get('viento', 0), reg.get('lluvia', 0))
                 for alerta in alertas_locales: 
                     print(f"   {alerta}")
                 print("-" * 30)
@@ -295,19 +251,101 @@ class InterfazPyClima:
                 self._mostrar_separador()
                 
                 encontrados = 0
-                for reg in self.datos:
+                registros_operario = []
+                for indice, reg in enumerate(self.datos):
                     if reg.get("registrado_por") == op_seleccionado:
                         encontrados += 1
+                        registros_operario.append((indice, reg))
                         temp = reg.get('temp', reg.get('temperatura', 0))
-                        print(f"📅 {reg.get('fecha')} | 📍 {reg.get('distrito', 'Desconocida')}")
+                        estado_edicion = " | 🔒 Ya editado" if reg.get("editado") else " | ✏️ Editable"
+                        print(f"{encontrados}. 📅 {reg.get('fecha')} | 📍 {reg.get('distrito', 'Desconocida')}{estado_edicion}")
                         print(f"   🌡️  T: {temp}°C | 💧 H: {reg.get('humedad', 0)}% | 💨 V: {reg.get('viento', 0)} km/h")
                         print("-" * 30)
                         
                 print(f"✅ Total de registros de este operario: {encontrados}")
+
+                if self.usuario_actual and op_seleccionado == self.usuario_actual.get("num_empleado") and registros_operario:
+                    editar = input("\n¿Desea editar uno de sus registros? (s/n): ").strip().lower()
+                    if editar == "s":
+                        self._editar_registro_usuario(registros_operario)
+                elif self.usuario_actual and op_seleccionado != self.usuario_actual.get("num_empleado"):
+                    print("ℹ️ Solo el usuario que registró los datos puede editarlos.")
             else:
                 print("❌ Selección inválida")
         except ValueError:
             print("❌ Ingrese un número válido")
+
+    def _editar_registro_usuario(self, registros_operario):
+        """Permite editar una sola vez un registro propio seleccionado desde la consulta por usuario."""
+        try:
+            seleccion = input("Seleccione el número del registro a editar (Enter para cancelar): ").strip()
+            if not seleccion:
+                return
+
+            indice_lista = int(seleccion) - 1
+            if not (0 <= indice_lista < len(registros_operario)):
+                print("❌ Selección inválida.")
+                return
+
+            indice_real, registro = registros_operario[indice_lista]
+
+            if not self.usuario_actual or registro.get("registrado_por") != self.usuario_actual.get("num_empleado"):
+                print("❌ Solo puedes editar registros creados por tu propio usuario.")
+                return
+
+            if registro.get("editado"):
+                print("❌ Este registro ya fue editado anteriormente y está bloqueado.")
+                return
+
+            confirmar = input("¿Confirmas que deseas editar este registro? Solo podrás hacerlo una vez (s/n): ").strip().lower()
+            if confirmar != "s":
+                print("❌ Edición cancelada.")
+                return
+
+            distrito_actual = registro.get("distrito", "")
+            temp_actual = registro.get("temp", registro.get("temperatura", 0))
+            humedad_actual = registro.get("humedad", 0)
+            viento_actual = registro.get("viento", 0)
+            lluvia_actual = registro.get("lluvia", 0.0)
+
+            nuevo_distrito = input(f"Nuevo distrito (actual: {distrito_actual}) [Enter para mantener]: ").strip()
+            nueva_temp = input(f"Nueva temperatura (actual: {temp_actual}) [Enter para mantener]: ").strip()
+            nueva_humedad = input(f"Nueva humedad (actual: {humedad_actual}) [Enter para mantener]: ").strip()
+            nuevo_viento = input(f"Nuevo viento (actual: {viento_actual}) [Enter para mantener]: ").strip()
+            nueva_lluvia = input(f"Nueva lluvia (actual: {lluvia_actual}) [Enter para mantener]: ").strip()
+
+            distrito_final = nuevo_distrito.title() if nuevo_distrito else distrito_actual
+            temp_final = float(nueva_temp) if nueva_temp else float(temp_actual)
+            humedad_final = float(nueva_humedad) if nueva_humedad else float(humedad_actual)
+            viento_final = float(nuevo_viento) if nuevo_viento else float(viento_actual)
+            lluvia_final = float(nueva_lluvia) if nueva_lluvia else float(lluvia_actual)
+
+            for i, reg in enumerate(self.datos):
+                if i != indice_real and reg.get("fecha") == registro.get("fecha") and reg.get("distrito", "").lower() == distrito_final.lower():
+                    print("❌ No se puede guardar la edición porque crearía un registro duplicado para esa fecha y distrito.")
+                    return
+
+            umbrales = persistencia.obtener_umbrales_alerta()
+            datos_registro = {"temperatura": temp_final, "humedad": humedad_final, "viento": viento_final}
+            alertas_activas = alertas.evaluar_alertas(datos_registro, umbrales)
+
+            self.datos[indice_real]["distrito"] = distrito_final
+            self.datos[indice_real]["temp"] = temp_final
+            self.datos[indice_real]["temperatura"] = temp_final
+            self.datos[indice_real]["humedad"] = humedad_final
+            self.datos[indice_real]["viento"] = viento_final
+            self.datos[indice_real]["lluvia"] = lluvia_final
+            self.datos[indice_real]["alertas"] = alertas_activas
+            self.datos[indice_real]["editado"] = True
+
+            if persistencia.actualizar_base_de_datos(self.datos):
+                self.datos = self._cargar_datos()
+                print("✅ Registro editado correctamente. Ya no podrá modificarse de nuevo.")
+            else:
+                print("❌ No se pudieron guardar los cambios.")
+
+        except ValueError:
+            print("❌ Has introducido un valor numérico no válido. No se guardaron cambios.")
     
     def _mostrar_datos_zona(self, zona):
         """Muestra todos los datos de una zona iterando sobre la LISTA"""
@@ -324,7 +362,7 @@ class InterfazPyClima:
                 print(f"   💧 Humedad: {reg['humedad']}%")
                 print(f"   💨 Viento: {reg['viento']} km/h")
                 
-                alertas_locales = self._analizar_alertas(temp, reg['humedad'], reg['viento'])
+                alertas_locales = self._analizar_alertas(temp, reg['humedad'], reg['viento'], reg.get('lluvia', 0))
                 for alerta in alertas_locales: print(f"   {alerta}")
                 print()
         
@@ -335,13 +373,30 @@ class InterfazPyClima:
         """Muestra histórico completo con autoría detallada y opciones de filtrado"""
         while True:
             self._mostrar_encabezado("📈 HISTÓRICO COMPLETO DE TODAS LAS ZONAS")
-            self.datos = self._cargar_datos() # Refrescar
+            self.datos = self._cargar_datos()
             
             if not self.datos:
                 print("❌ No hay datos registrados en el sistema.")
                 input("Presione Enter para continuar...")
                 return
                 
+            print("1.Ver histórico completo")
+            print("2.Ver gráfica del histórico")
+            print("3.Volver al menú principal")
+            self._mostrar_separador()
+
+            seleccion_historico = input("Seleccione una opción (1-3): ").strip()
+
+            if seleccion_historico == "2":
+                self.generar_reporte_historico_visual()
+                continue
+            elif seleccion_historico == "3":
+                break
+            elif seleccion_historico != "1":
+                print("Opción no válida. Por favor, seleccione 1, 2 o 3.")
+                input("Presione Enter para intentarlo de nuevo...")
+                continue
+
             print(f"\n{'='*50}")
             for reg in self.datos:
                 temp = reg.get('temp', reg.get('temperatura', 0))
@@ -367,18 +422,20 @@ class InterfazPyClima:
             # --- SUBMENÚ DE NAVEGACIÓN Y FILTROS (Punto 7) ---
             print("\nOPCIONES DE HISTÓRICO:")
             print("1. 🔍 Aplicar filtros de búsqueda (Zona / Fecha / Usuario)")
-            print("2. ⬅️  Volver al menú principal")
+            print("2. 📊 Generar gráfica general")
+            print("3. ⬅️  Volver al menú principal")
             
-            opcion = input("¿Qué desea hacer ahora? (1-2): ").strip()
+            opcion = input("¿Qué desea hacer ahora? (1-3): ").strip()
             
             if opcion == "1":
-                # Como ya programamos un menú de filtros genial en la Fase B, lo reciclamos
                 self.consultar_datos()
                 break # Al salir de las consultas, volvemos al menú principal para no imprimir el histórico gigante otra vez
             elif opcion == "2":
+                self.generar_reporte_historico_visual()
+            elif opcion == "3":
                 break
             else:
-                print("❌ Opción no válida. Por favor, seleccione 1 o 2.")
+                print("❌ Opción no válida. Por favor, seleccione 1, 2 o 3.")
                 input("Presione Enter para intentarlo de nuevo...")
     
     def mostrar_panel_alertas(self):
@@ -391,14 +448,13 @@ class InterfazPyClima:
             # 1. Recopilamos las alertas actuales
             for reg in self.datos:
                 temp = reg.get('temp', reg.get('temperatura', 0))
-                alertas_locales = self._analizar_alertas(temp, reg.get('humedad', 0), reg.get('viento', 0))
+                alertas_locales = self._analizar_alertas(temp, reg.get('humedad', 0), reg.get('viento', 0), reg.get('lluvia', 0))
                 if alertas_locales:
                     alertas_encontradas.append({
                         'zona': reg.get('distrito', 'Desconocida'),
                         'fecha': reg['fecha'],
                         'alertas': alertas_locales
                     })
-            
             if not alertas_encontradas:
                 print("\n✅ No hay alertas activas en ningún distrito en este momento.")
                 input("\nPresione Enter para volver al menú principal...")
@@ -418,26 +474,118 @@ class InterfazPyClima:
             print("2. 🔍 Filtrar por tipo de alerta")
             print("3. ⬅️  Volver al menú principal")
             print("4. 🚪 Salir del sistema")
-            
+
             opcion = input("\nSeleccione una opción (1-4): ").strip()
-            
+
             if opcion == "1":
                 self._imprimir_alertas(alertas_encontradas)
                 # Mostramos menú posterior y comprobamos si quiere volver al menú principal
                 if self._menu_post_alerta() == "menu_principal": break
-                
+
             elif opcion == "2":
                 accion = self._filtrar_y_mostrar_alertas(alertas_encontradas, lista_tipos)
                 if accion == "menu_principal": break
-                
+
             elif opcion == "3":
                 break # Rompe el bucle y vuelve al menú principal
-                
+
             elif opcion == "4":
                 self.salir()
                 exit()
             else:
                 print("❌ Opción no válida.")
+
+    def generar_reporte_distrito(self, distrito=None, pausa=True):
+        """Intermediario que llama a la grafica por distrito."""
+        self._mostrar_encabezado("REPORTE ANALÍTICO POR DISTRITO")
+        if distrito:
+            print(f"\nGenerando gráfica para el distrito: {distrito}")
+        else:
+            print("\nCargando datos y distritos disponibles...")
+
+        analitica.generar_reporte_distrito_especifico(distrito)
+
+        if pausa:
+            input("\n\nPresione: Enter para volver al menú principal...")
+
+    def _menu_consultar_zona(self):
+        """Muestra zonas y luego deja elegir ver datos, grafica o ambas cosas."""
+        self.zonas_validas = self._obtener_zonas()
+        print("\nZonas disponibles:")
+        for i, zona in enumerate(self.zonas_validas, 1):
+            print(f"   {i}. {zona}")
+
+        try:
+            seleccion = int(input("\nSeleccione una zona (numero): ")) - 1
+            if 0 <= seleccion < len(self.zonas_validas):
+                zona_seleccionada = self.zonas_validas[seleccion]
+                self._ofrecer_grafica_zona(zona_seleccionada)
+            else:
+                print("Selección inválida")
+        except ValueError:
+            print("Ingrese un número válido")
+
+    def _ofrecer_grafica_zona(self, zona):
+        """Submenu de acciones para el distrito ya seleccionado."""
+        while True:
+            print(f"\nACCIONES PARA {zona.upper()}:")
+            print("1. Ver datos de este distrito")
+            print("2. Generar gráfica de este distrito")
+            print("3. Ver ambas")
+            print("4. Volver al menú de consultas")
+
+            opcion = input("Seleccione una opción (1-4): ").strip()
+
+            if opcion == "1":
+                self._mostrar_datos_zona(zona)
+                input("\nPresione Enter para continuar...")
+                return
+            if opcion == "2":
+                self.generar_reporte_distrito(distrito=zona, pausa=False)
+                input("\nPresione Enter para continuar...")
+                return
+            if opcion == "3":
+                self._mostrar_datos_zona(zona)
+                self.generar_reporte_distrito(distrito=zona, pausa=False)
+                input("\nPresione Enter para continuar...")
+                return
+            if opcion == "4":
+                return
+
+            print("Opcion no valida.")
+
+    def menu_principal(self):
+        while True:
+            self._mostrar_encabezado("SISTEMA PYCLIMA RESILIENTE v3.0")
+            print("1. Registrar Datos Climaticos")
+            print("2. Consultar Datos (Por Zona)")
+            print("3. Ver Historico (Todas las Zonas)")
+            print("4. Alertas Activas")
+            print("5. Salir")
+            self._mostrar_separador()
+
+            opcion = input("Seleccione una opcion (1-5): ").strip()
+
+            if opcion == "1":
+                self.registrar_datos()
+            elif opcion == "2":
+                self.consultar_datos()
+            elif opcion == "3":
+                self.ver_historico()
+            elif opcion == "4":
+                self.mostrar_panel_alertas()
+            elif opcion == "5":
+                self.salir()
+                break
+            else:
+                print("Opción no válida. Intente de nuevo.")
+                input("Presione Enter para continuar...")
+
+    def generar_reporte_historico_visual(self):
+        """Intermediario que llama a la gráfica general del histórico"""
+        self._mostrar_encabezado("📊 GRÁFICA GENERAL DEL HISTÓRICO")
+        analitica.generar_reporte_visual_pro()
+        input("\n\nPresione Enter para volver al histórico...")
 
     def _imprimir_alertas(self, lista_alertas):
         """Función auxiliar para imprimir las alertas de forma estructurada"""
@@ -492,7 +640,7 @@ class InterfazPyClima:
             return "panel_alertas"
 
     def _menu_post_alerta(self):
-        """Submenú de navegación posterior exigido por el esquema (Punto 8)"""
+        """Submenú de navegación posterior exigido por el esquema"""
         while True:
             print("\nOPCIONES POSTERIORES:")
             print("1. 🔙 Volver al panel de alertas")
