@@ -480,5 +480,208 @@
         "alertas": [],
         "registrado_por": "850369",
         "editado": false
+    },
+    {
+        "fecha": "2026-04-8",
+        "distrito": "Centro",
+        "temperatura": 33.0,
+        "temp": 33.0,
+        "humedad": 33.0,
+        "viento": 33.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2026-04-09",
+        "distrito": "Centro",
+        "temperatura": 40.0,
+        "temp": 40.0,
+        "humedad": 40.0,
+        "viento": 40.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "CRÍTICO: Alerta Roja. Calor extremo (40.0°C).",
+            "VIENTO: Rachas de 40.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2025-02-22",
+        "distrito": "Latina",
+        "temperatura": 43.0,
+        "temp": 43.0,
+        "humedad": 12.0,
+        "viento": 24.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "CRÍTICO: Alerta Roja. Calor extremo (43.0°C).",
+            "SEQUEDAD: Humedad muy baja (12.0%). Riesgo de incendio."
+        ],
+        "registrado_por": "100375",
+        "editado": false
+    },
+    {
+        "fecha": "2021-01-10",
+        "distrito": "Salamanca",
+        "temperatura": 24.0,
+        "temp": 24.0,
+        "humedad": 54.0,
+        "viento": 26.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
+    },
+    {
+        "fecha": "2020-03-10",
+        "distrito": "Arganzuela",
+        "temperatura": 30.0,
+        "temp": 30.0,
+        "humedad": 35.0,
+        "viento": 26.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "100375",
+        "editado": false
+    },
+    {
+        "fecha": "2025-03-09",
+        "distrito": "Carabanchel",
+        "temperatura": 36.0,
+        "temp": 36.0,
+        "humedad": 68.0,
+        "viento": 54.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (36.0°C).",
+            "VIENTO: Rachas de 54.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "100375",
+        "editado": false
+    },
+    {
+        "fecha": "2020-03-10",
+        "distrito": "San Blas-Canillejas",
+        "temperatura": 26.0,
+        "temp": 26.0,
+        "humedad": 54.0,
+        "viento": 36.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "850369",
+        "editado": false
+    },
+    {
+        "fecha": "2018-06-10",
+        "distrito": "Chamartín",
+        "temperatura": -3.0,
+        "temp": -3.0,
+        "humedad": 56.0,
+        "viento": 67.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VIENTO: Rachas de 67.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "036939",
+        "editado": false
+    },
+    {
+        "fecha": "2014-05-03",
+        "distrito": "Chamberí",
+        "temperatura": -6.0,
+        "temp": -6.0,
+        "humedad": 65.0,
+        "viento": 86.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VIENTO: Rachas de 86.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "036939",
+        "editado": false
+    },
+    {
+        "fecha": "2023-01-02",
+        "distrito": "Ciudad Lineal",
+        "temperatura": 16.0,
+        "temp": 16.0,
+        "humedad": 69.0,
+        "viento": 84.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VIENTO: Rachas de 84.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2015-05-08",
+        "distrito": "Hortaleza",
+        "temperatura": 29.0,
+        "temp": 29.0,
+        "humedad": 68.0,
+        "viento": 20.0,
+        "lluvia": 0.0,
+        "alertas": [],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2013-12-31",
+        "distrito": "Moratalaz",
+        "temperatura": 36.0,
+        "temp": 36.0,
+        "humedad": 45.0,
+        "viento": 15.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (36.0°C)."
+        ],
+        "registrado_por": "182736",
+        "editado": false
+    },
+    {
+        "fecha": "2025-06-04",
+        "distrito": "Tetuán",
+        "temperatura": 36.0,
+        "temp": 36.0,
+        "humedad": 54.0,
+        "viento": 15.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (36.0°C)."
+        ],
+        "registrado_por": "623035",
+        "editado": false
+    },
+    {
+        "fecha": "2024-03-05",
+        "distrito": "Usera",
+        "temperatura": 38.0,
+        "temp": 38.0,
+        "humedad": 45.0,
+        "viento": 15.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "AVISO: Alerta Naranja. Temperatura elevada (38.0°C)."
+        ],
+        "registrado_por": "623035",
+        "editado": false
+    },
+    {
+        "fecha": "2025-11-02",
+        "distrito": "Vicálvaro",
+        "temperatura": 29.0,
+        "temp": 29.0,
+        "humedad": 85.0,
+        "viento": 100.0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VIENTO: Rachas de 100.0 km/h. Riesgo en parques."
+        ],
+        "registrado_por": "623035",
+        "editado": false
     }
 ]

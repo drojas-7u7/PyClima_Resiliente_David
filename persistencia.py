@@ -54,23 +54,30 @@ def registrar_nuevo_dato(nuevo_registro):
                 return False
 
     print(f"\nDatos a registrar: {distrito_limpio} | {nuevo_registro['fecha']} | {nuevo_registro['temperatura']}°C")
-    confirmar = input(f"¿Confirmas guardar estos datos en el JSON? (Escribe '{CONFIRMACIÓN_REQUERIDA}'): ")
-
-    if confirmar.lower() == CONFIRMACIÓN_REQUERIDA:
-        nuevo_registro["distrito"] = distrito_limpio
-        historico.append(nuevo_registro)
+    
+    # --- PASO 2: BUCLE DE CONFIRMACIÓN PROFESIONAL ---
+    while True:
+        confirmar = input("¿Confirmas guardar estos datos en el sistema? (s/n): ").strip().lower()
         
-        try:
-            with open(ARCHIVO_JSON, 'w', encoding='utf-8') as F:
-                json.dump(historico, F, indent=4, ensure_ascii=False)
-            print("Registro guardado exitosamente.")
-            return True
-        except Exception as mi:
-            print(f"Error crítico al escribir en el disco: {mi}")
+        if confirmar == 's':
+            nuevo_registro["distrito"] = distrito_limpio
+            historico.append(nuevo_registro)
+            
+            try:
+                with open(ARCHIVO_JSON, 'w', encoding='utf-8') as F:
+                    json.dump(historico, F, indent=4, ensure_ascii=False)
+                print("✅ Registro guardado exitosamente.")
+                return True
+            except Exception as mi:
+                print(f"❌ Error crítico al escribir en el disco: {mi}")
+                return False
+                
+        elif confirmar == 'n':
+            print("❌ Operación cancelada. No se han guardado los datos.")
             return False
-    else:
-        print("Operación cancelada. No se han realizado cambios.")
-        return False
+            
+        else:
+            print("⚠️ No te he entendido. Por favor, escribe únicamente 's' para Sí o 'n' para No.\n")
 
 def actualizar_base_de_datos(historico_modificado):
     try:
@@ -80,3 +87,13 @@ def actualizar_base_de_datos(historico_modificado):
     except Exception as mi:
         print(f"Error al actualizar la base de datos: {mi}")
         return False
+
+def inicializar_archivo_datos():
+    """Verifica si existe el JSON principal, si no, lo crea vacío."""
+    if not os.path.exists(ARCHIVO_JSON):
+        print(f"⚙️  Inicializando sistema: Creando nueva base de datos ({ARCHIVO_JSON})...")
+        try:
+            with open(ARCHIVO_JSON, 'w', encoding='utf-8') as f:
+                json.dump([], f)
+        except Exception as e:
+            print(f"❌ Error crítico al crear la base de datos: {e}")

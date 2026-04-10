@@ -18,3 +18,7 @@ venv/
 .directory
 *~
 *.swp
+
+# --- Herramientas de Test y Logs ---
+.pytest_cache/
+logs/
