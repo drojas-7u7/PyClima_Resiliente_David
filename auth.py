@@ -1,6 +1,7 @@
 import json
 import os
 import getpass
+import validaciones
 
 DB_EMPLEADOS = "empleados.json"
 ARCHIVO_USUARIOS = 'usuarios.json'
@@ -26,31 +27,73 @@ def imprimir_detalle(r, idx=None):
     print("-" * 75)
 
 def registrar_usuario():
-    print("\n--- REGISTRO ---")
-    nombre = input("Nombre: ")
-    apellidos = input("Apellidos: ")
-    while True:
-        num = input("Número empleado (6 dígitos): ")
-        if num.isdigit() and len(num) == 6: break
-        print("Error: Deben ser 6 números.")
+    print("\n--- 📝 REGISTRO DE NUEVO USUARIO ---")
+    
+    # PASO 1: VALIDAR QUE SEA EMPLEADO AUTORIZADO
+    print("\n[PASO 1/3] Verificación de autenticidad del empleado")
+    print("-" * 50)
+    num_empleado = validaciones.validar_acceso()  # ← NUEVA VALIDACIÓN
+    
+    if num_empleado is None:
+        print("❌ No se puede continuar sin un número de empleado válido.")
+        return  # Cancela el registro
+    
+    # PASO 2: RECOPILAR DATOS PERSONALES
+    print("\n[PASO 2/3] Información personal")
+    print("-" * 50)
+    nombre = input("Nombre: ").strip()
+    apellidos = input("Apellidos: ").strip()
+    
+    # PASO 3: ESTABLECER CONTRASEÑA
+    print("\n[PASO 3/3] Identificador de acceso")
+    print("-" * 50)
     while True:
         pw = getpass.getpass("Contraseña (8+ alfanuméricos): ")
-        if len(pw) >= 8 and pw.isalnum(): break
+        if len(pw) >= 8 and pw.isalnum():
+            break
         print("Error: Mínimo 8 caracteres sin símbolos.")
     
+    # GUARDAR REGISTRO
     usuarios = cargar_datos(ARCHIVO_USUARIOS)
-    usuarios.append({"nombre": nombre, "apellidos": apellidos, "num_empleado": num, "password": pw})
+    usuarios.append({
+        "nombre": nombre,
+        "apellidos": apellidos,
+        "num_empleado": num_empleado,  # ← Usamos el validado
+        "password": pw
+    })
     guardar_datos(ARCHIVO_USUARIOS, usuarios)
-    print("Registro exitoso.")
+    print("\n✅ Registro exitoso. Ya puedes iniciar sesión.")
 
 def iniciar_sesion():
-    num = input("Número empleado: ")
-    pw = getpass.getpass("Contraseña: ")
-    for u in cargar_datos(ARCHIVO_USUARIOS):
-        if u["num_empleado"] == num and u["password"] == pw:
-            print(f"\n✅ Bienvenido/a, {u['nombre']} {u['apellidos']} (ID Operario: {u['num_empleado']})")
-            return u
-    print("Datos incorrectos.")
+    print("\n--- 🔓 INICIAR SESIÓN ---")
+    max_intentos = 3
+    intento = 0
+    
+    while intento < max_intentos:
+        # PASO 1: VALIDAR NÚMERO DE EMPLEADO
+        print(f"\n[Intento {intento + 1}/{max_intentos}]")
+        num = validaciones.validar_acceso()  # ← VALIDACIÓN INTEGRADA
+        
+        if num is None:
+            intento += 1
+            print(f"🔄 Intentos restantes: {max_intentos - intento}\n")
+            continue
+        
+        # PASO 2: VALIDAR CONTRASEÑA
+        pw = getpass.getpass("Contraseña: ")
+        
+        # PASO 3: BUSCAR EN usuarios.json
+        for u in cargar_datos(ARCHIVO_USUARIOS):
+            if u["num_empleado"] == num and u["password"] == pw:
+                print(f"\n✅ Bienvenido/a, {u['nombre']} {u['apellidos']} (ID: {u['num_empleado']})")
+                return u
+        
+        intento += 1
+        print("❌ Contraseña incorrecta.")
+        if intento < max_intentos:
+            print(f"🔄 Intentos restantes: {max_intentos - intento}\n")
+    
+    print(f"❌ Has agotado los {max_intentos} intentos. Vuelve al menú.")
     return None
 
 def consultar_y_editar_historial(num_empleado):

@@ -178,20 +178,56 @@ def validar_zona():
         print("🔄 Inténtalo de nuevo.\n")
         
 def validar_acceso():
+    """
+    Valida que el empleado exista en empleados.json.
+    Devuelve el número de empleado si es válido, None si no.
+    
+    USO: 
+    - DEV 1 (auth.py): num_empleado = validar_acceso()
+    """
+    max_intentos = 3
+    intento = 0
+    
     try:
-        with open("empleados.json", "r") as f:
+        with open("empleados.json", "r", encoding='utf-8') as f:
             lista_autorizados = json.load(f)
-        numero_ingresado = input("Introduce tu número de empleado: ")
-        if numero_ingresado in lista_autorizados:
-            print("Acceso concedido.")
-            return True
-        else:
-            print("Número de empleado no reconocido.")
-            return False
-            
     except FileNotFoundError:
-        print("Error: El archivo de empleados no existe.")
-        return False
+        print("❌ Error crítico: El archivo 'empleados.json' no existe.")
+        return None
+    except json.JSONDecodeError:
+        print("❌ Error crítico: El archivo 'empleados.json' está corrupto.")
+        return None
+    
+    while intento < max_intentos:
+        try:
+            numero_ingresado = input(f"Introduce tu número de empleado [{intento + 1}/{max_intentos}] [o 'c' para cancelar]: ").strip()
+            
+            if numero_ingresado.lower() == 'c':
+                raise KeyboardInterrupt
+            
+            if not numero_ingresado:
+                print("❌ Error: El número de empleado no puede estar vacío.")
+                intento += 1
+                continue
+            
+            # Búsqueda exacta en la lista
+            if numero_ingresado in lista_autorizados:
+                print(f"✅ Número de empleado {numero_ingresado} validado correctamente.")
+                return numero_ingresado  # Devolvemos el número válido
+            else:
+                intento += 1
+                intentos_restantes = max_intentos - intento
+                print(f"❌ Número de empleado NO reconocido.")
+                if intentos_restantes > 0:
+                    print(f"🔄 Intentos restantes: {intentos_restantes}\n")
+                else:
+                    print(f"❌ Has agotado los {max_intentos} intentos.\n")
+                    
+        except KeyboardInterrupt:
+            print("❌ Validación cancelada por el usuario.")
+            return None
+    
+    return None  # Si agota intentos, devuelve None
 
 
 def validar_duplicado(nueva_fecha, nueva_zona, historial):
