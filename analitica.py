@@ -14,8 +14,13 @@ def generar_reporte_visual_pro():
     try:
         with open(ARCHIVO_BASE, "r", encoding="utf-8") as f:
             datos = json.load(f)
-        distritos = [d["distrito"] for d in datos]
-        temps = [d["temp"] for d in datos]
+        pares_validos = [
+            (d.get("distrito", "Desconocido"), d.get("temp", d.get("temperatura")))
+            for d in datos
+            if d.get("temp", d.get("temperatura")) is not None
+        ]
+        distritos = [distrito for distrito, _ in pares_validos]
+        temps = [temp for _, temp in pares_validos]
 
         if not temps:
             return

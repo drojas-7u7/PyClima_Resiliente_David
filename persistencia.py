@@ -4,6 +4,16 @@ import os
 ARCHIVO_JSON = "datos_clima.json"
 CONFIGURACIÓN_DE_ARCHIVO = "config.json"
 CONFIRMACIÓN_REQUERIDA = "si"
+UMBRALES_POR_DEFECTO = {
+    "temp_max_naranja": 35.0,
+    "temp_max_roja": 40.0,
+    "temp_min_alerta": 2.0,
+    "temp_min_emergencia": -2.0,
+    "viento_max": 40,
+    "humedad_min": 15,
+    "lluvia_naranja": 20.0,
+    "lluvia_roja": 50.0,
+}
 
 def obtener_distritos_permitidos():
     if not os.path.exists(CONFIGURACIÓN_DE_ARCHIVO):
@@ -18,14 +28,15 @@ def obtener_distritos_permitidos():
     
 def obtener_umbrales_alerta():
     if not os.path.exists(CONFIGURACIÓN_DE_ARCHIVO):
-        return {"temp_max_naranja": 35.0, "temp_max_roja": 40.0, "viento_max": 40, "humedad_min": 15}
+        return UMBRALES_POR_DEFECTO.copy()
     
     try:
         with open(CONFIGURACIÓN_DE_ARCHIVO, 'r', encoding='utf-8') as F:
             configuración = json.load(F)
-            return configuración.get("umbrales", {})
+            umbrales = configuración.get("umbrales", {})
+            return {**UMBRALES_POR_DEFECTO, **umbrales}
     except Exception:
-        return {"temp_max_naranja": 35.0, "temp_max_roja": 40.0, "viento_max": 40, "humedad_min": 15}
+        return UMBRALES_POR_DEFECTO.copy()
 
 def leer_historico():
     if not os.path.exists(ARCHIVO_JSON):
@@ -35,6 +46,9 @@ def leer_historico():
             return json.load(F)
     except json.JSONDecodeError:
         print("Error: El archivo de datos está corrupto.")
+        return []
+    except Exception as error:
+        print(f"Error: No se pudo leer el archivo de datos: {error}")
         return []
 
 def registrar_nuevo_dato(nuevo_registro):

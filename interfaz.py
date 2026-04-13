@@ -58,6 +58,32 @@ class InterfazPyClima:
     def _mostrar_separador(self):
         print("-" * 50)
 
+    def _normalizar_distrito_oficial(self, distrito):
+        distritos_oficiales = persistencia.obtener_distritos_permitidos()
+        mapa_distritos = {item.lower(): item for item in distritos_oficiales}
+        return mapa_distritos.get(distrito.strip().lower())
+
+    def _pedir_numero_editable(self, etiqueta, valor_actual, minimo=None, maximo=None):
+        while True:
+            entrada = input(f"{etiqueta} (actual: {valor_actual}) [Enter para mantener]: ").strip()
+            if not entrada:
+                return float(valor_actual)
+
+            try:
+                valor = float(entrada)
+            except ValueError:
+                print("❌ Introduce un valor numérico válido.")
+                continue
+
+            if minimo is not None and valor < minimo:
+                print(f"❌ El valor no puede ser menor que {minimo}.")
+                continue
+            if maximo is not None and valor > maximo:
+                print(f"❌ El valor no puede ser mayor que {maximo}.")
+                continue
+
+            return valor
+
     def registrar_datos(self):
         """Flujo completo de registro con validaciones"""
         self._mostrar_encabezado("📝 REGISTRAR NUEVOS DATOS CLIMÁTICOS")
@@ -309,16 +335,18 @@ class InterfazPyClima:
             lluvia_actual = registro.get("lluvia", 0.0)
 
             nuevo_distrito = input(f"Nuevo distrito (actual: {distrito_actual}) [Enter para mantener]: ").strip()
-            nueva_temp = input(f"Nueva temperatura (actual: {temp_actual}) [Enter para mantener]: ").strip()
-            nueva_humedad = input(f"Nueva humedad (actual: {humedad_actual}) [Enter para mantener]: ").strip()
-            nuevo_viento = input(f"Nuevo viento (actual: {viento_actual}) [Enter para mantener]: ").strip()
-            nueva_lluvia = input(f"Nueva lluvia (actual: {lluvia_actual}) [Enter para mantener]: ").strip()
+            distrito_final = distrito_actual
+            if nuevo_distrito:
+                distrito_normalizado = self._normalizar_distrito_oficial(nuevo_distrito)
+                if not distrito_normalizado:
+                    print("❌ El distrito introducido no es un distrito oficial de Madrid.")
+                    return
+                distrito_final = distrito_normalizado
 
-            distrito_final = nuevo_distrito.title() if nuevo_distrito else distrito_actual
-            temp_final = float(nueva_temp) if nueva_temp else float(temp_actual)
-            humedad_final = float(nueva_humedad) if nueva_humedad else float(humedad_actual)
-            viento_final = float(nuevo_viento) if nuevo_viento else float(viento_actual)
-            lluvia_final = float(nueva_lluvia) if nueva_lluvia else float(lluvia_actual)
+            temp_final = self._pedir_numero_editable("Nueva temperatura", temp_actual, -20, 50)
+            humedad_final = self._pedir_numero_editable("Nueva humedad", humedad_actual, 0, 100)
+            viento_final = self._pedir_numero_editable("Nuevo viento", viento_actual, 0, 150)
+            lluvia_final = self._pedir_numero_editable("Nueva lluvia", lluvia_actual, 0)
 
             for i, reg in enumerate(self.datos):
                 if i != indice_real and reg.get("fecha") == registro.get("fecha") and reg.get("distrito", "").lower() == distrito_final.lower():

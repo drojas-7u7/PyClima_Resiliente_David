@@ -244,7 +244,7 @@ def validar_duplicado(nueva_fecha, nueva_zona, historial):
     Retorna: True (si hay error de duplicado) o False (si todo está correcto).
     """
     for registro in historial:
-        if registro['fecha'] == nueva_fecha and registro['zona'].lower() == nueva_zona.lower():
+        if registro['fecha'] == nueva_fecha and registro['distrito'].lower() == nueva_zona.lower():
             print(f"❌ Error: Ya existen datos para '{nueva_zona}' en la fecha {nueva_fecha}.")
             print("⚠️ No se permiten registros duplicados para la misma zona el mismo día.")
             return True 
