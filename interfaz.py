@@ -460,12 +460,14 @@ class InterfazPyClima:
                 input("\nPresione Enter para volver al menú principal...")
                 break
 
-            # 2. Extraemos los tipos de alerta únicos para crear el filtro dinámico
-            tipos_alertas = set()
-            for item in alertas_encontradas:
-                for alerta in item['alertas']:
-                    tipos_alertas.add(alerta)
-            lista_tipos = list(tipos_alertas)
+            # 2. Definimos las categorías fijas de alerta basadas en los umbrales
+            lista_tipos = [
+                "Alerta de calor", 
+                "Alerta de frío", 
+                "Alerta de viento", 
+                "Alerta de humedad", 
+                "Alerta de lluvia"
+            ]
 
             # 3. Mostrar menú principal del panel de alertas
             print(f"\n⚠️  Se detectaron {len(alertas_encontradas)} zonas con alertas activas.")
@@ -600,8 +602,29 @@ class InterfazPyClima:
     def _filtrar_y_mostrar_alertas(self, alertas_encontradas, lista_tipos):
         """Maneja el filtrado de alertas y lanza la navegación posterior"""
         print("\n🚨 TIPOS DE ALERTA ACTUALMENTE ACTIVOS:")
+        
+        # 1. Subimos el diccionario de palabras clave aquí arriba
+        palabras_clave = {
+            "Alerta de calor": ["calor", "temperatura elevada"],
+            "Alerta de frío": ["frío", "helada", "frio"],
+            "Alerta de viento": ["viento"],
+            "Alerta de humedad": ["humedad", "sequedad"],
+            "Alerta de lluvia": ["lluvia"]
+        }
+
+        # 2. Imprimimos el menú calculando cuántas alertas hay de cada tipo
         for i, tipo in enumerate(lista_tipos, 1):
-            print(f"   {i}. {tipo}")
+            claves = palabras_clave[tipo]
+            contador = 0
+            # Contamos cuántas alertas coinciden con este tipo
+            for item in alertas_encontradas:
+                for alerta in item['alertas']:
+                    if any(clave in alerta.lower() for clave in claves):
+                        contador += 1
+                        break # Si encuentra una, suma 1 y pasa a la siguiente zona
+            
+            # Mostramos la opción con el contador
+            print(f"   {i}. {tipo} ({contador} detectadas)")
             
         # --- AÑADIMOS LA OPCIÓN DE ESCAPE (Dinámica) ---
         opcion_volver = len(lista_tipos) + 1
@@ -610,22 +633,25 @@ class InterfazPyClima:
         try:
             entrada = input(f"\nSeleccione la alerta que desea investigar (1-{opcion_volver}) [o 'c' para cancelar]: ").strip()
             
-            # Si usa el truco de la Fase B para cancelar
             if entrada.lower() == 'c':
                 return "panel_alertas"
                 
             seleccion = int(entrada)
             
-            # Si elige la opción extra de volver
             if seleccion == opcion_volver:
                 return "panel_alertas"
                 
-            # Si elige una alerta válida
             elif 1 <= seleccion <= len(lista_tipos):
                 alerta_buscada = lista_tipos[seleccion - 1]
+                claves = palabras_clave[alerta_buscada]
                 
-                # Filtramos la lista buscando la alerta exacta
-                filtradas = [item for item in alertas_encontradas if alerta_buscada in item['alertas']]
+                # 3. Filtramos la lista buscando las coincidencias
+                filtradas = []
+                for item in alertas_encontradas:
+                    for alerta in item['alertas']:
+                        if any(clave in alerta.lower() for clave in claves):
+                            filtradas.append(item)
+                            break
                 
                 print(f"\n📊 Resultados filtrados para: {alerta_buscada}")
                 self._imprimir_alertas(filtradas)
