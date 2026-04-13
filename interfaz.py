@@ -490,36 +490,42 @@ class InterfazPyClima:
 
             # 2. Definimos las categorías fijas de alerta basadas en los umbrales
             lista_tipos = [
-                "Alerta de calor", 
-                "Alerta de frío", 
-                "Alerta de viento", 
-                "Alerta de humedad", 
+                "Alerta de calor",
+                "Alerta de frío",
+                "Alerta de viento",
+                "Alerta de humedad",
                 "Alerta de lluvia"
             ]
 
             # 3. Mostrar menú principal del panel de alertas
             print(f"\n⚠️  Se detectaron {len(alertas_encontradas)} zonas con alertas activas.")
             print("\nOPCIONES DEL PANEL:")
-            print("1. 👁️  Ver TODAS las alertas activas")
-            print("2. 🔍 Filtrar por tipo de alerta")
-            print("3. ⬅️  Volver al menú principal")
-            print("4. 🚪 Salir del sistema")
+            print("1. 📅 Ver alertas de hoy")
+            print("2. 📋 Historial de alertas")
+            print("3. 🔍 Filtrar por tipo de alerta")
+            print("4. ⬅️  Volver al menú principal")
+            print("5. 🚪 Salir del sistema")
 
-            opcion = input("\nSeleccione una opción (1-4): ").strip()
+            opcion = input("\nSeleccione una opción (1-5): ").strip()
 
             if opcion == "1":
-                self._imprimir_alertas(alertas_encontradas)
+                self._mostrar_alertas_hoy(alertas_encontradas)
                 # Mostramos menú posterior y comprobamos si quiere volver al menú principal
                 if self._menu_post_alerta() == "menu_principal": break
 
             elif opcion == "2":
+                self._imprimir_alertas(alertas_encontradas)
+                # Mostramos menú posterior y comprobamos si quiere volver al menú principal
+                if self._menu_post_alerta() == "menu_principal": break
+
+            elif opcion == "3":
                 accion = self._filtrar_y_mostrar_alertas(alertas_encontradas, lista_tipos)
                 if accion == "menu_principal": break
 
-            elif opcion == "3":
+            elif opcion == "4":
                 break # Rompe el bucle y vuelve al menú principal
 
-            elif opcion == "4":
+            elif opcion == "5":
                 self.salir()
                 exit()
             else:
@@ -623,8 +629,27 @@ class InterfazPyClima:
         for item in lista_alertas:
             print(f"📍 ZONA: {item['zona']} | 📅 FECHA: {item['fecha']}")
             print("-" * 45)
-            for alerta in item['alertas']: 
+            for alerta in item['alertas']:
                 print(f"  → {alerta}")
+        print("="*50)
+
+    def _mostrar_alertas_hoy(self, lista_alertas):
+        """Muestra solo las alertas del día en curso"""
+        fecha_hoy = datetime.now().strftime('%Y-%m-%d')
+        alertas_hoy = [item for item in lista_alertas if item['fecha'] == fecha_hoy]
+
+        print("\n" + "="*50)
+        print(f"📅 ALERTAS DEL DIA: {fecha_hoy}")
+        print("="*50)
+
+        if not alertas_hoy:
+            print(f"\n✅ No hay alertas registradas para hoy ({fecha_hoy})")
+        else:
+            for item in alertas_hoy:
+                print(f"📍 ZONA: {item['zona']} | 📅 FECHA: {item['fecha']}")
+                print("-" * 45)
+                for alerta in item['alertas']:
+                    print(f"  → {alerta}")
         print("="*50)
 
     def _filtrar_y_mostrar_alertas(self, alertas_encontradas, lista_tipos):

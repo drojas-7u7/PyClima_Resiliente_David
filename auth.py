@@ -82,12 +82,12 @@ def imprimir_detalle(r, idx=None):
 def registrar_usuario():
     try:
         print("\n--- 📝 REGISTRO DE NUEVO USUARIO ---")
-        
-        # PASO 1: VALIDAR QUE SEA EMPLEADO AUTORIZADO
+
+        # PASO 1: VALIDAR QUE SEA EMPLEADO AUTORIZADO (contra empleados.json)
         print("\n[PASO 1/3] Verificación de autenticidad del empleado")
         print("-" * 50)
-        num_empleado = validaciones.validar_acceso()  # ← NUEVA VALIDACIÓN
-        
+        num_empleado = validaciones.validar_acceso()  # Valida SOLO contra empleados.json
+
         if num_empleado is None:
             print("❌ No se puede continuar sin un número de empleado válido.")
             return  # Cancela el registro
@@ -96,17 +96,17 @@ def registrar_usuario():
         if any(u.get("num_empleado") == num_empleado for u in usuarios):
             print("❌ Este número de empleado ya tiene un usuario registrado.")
             return
-        
+
         # PASO 2: RECOPILAR DATOS PERSONALES
         print("\n[PASO 2/3] Información personal")
         print("-" * 50)
         nombre = input("Nombre: ").strip()
         apellidos = input("Apellidos: ").strip()
-        
+
         if not nombre or not apellidos:
             print("❌ Error: Nombre y apellidos no pueden estar vacíos.")
             return
-        
+
         # PASO 3: ESTABLECER CONTRASEÑA
         print("\n[PASO 3/3] Identificador de acceso")
         print("-" * 50)
@@ -115,17 +115,17 @@ def registrar_usuario():
             if len(pw) >= 8 and pw.isalnum():
                 break
             print("Error: Mínimo 8 caracteres sin símbolos.")
-        
+
         # GUARDAR REGISTRO
         usuarios.append({
             "nombre": nombre,
             "apellidos": apellidos,
-            "num_empleado": num_empleado,  # ← Usamos el validado
+            "num_empleado": num_empleado,  # Número validado contra empleados.json
             "password": pw
         })
         guardar_datos(ARCHIVO_USUARIOS, usuarios)
         print("\n✅ Registro exitoso. Ya puedes iniciar sesión.")
-    
+
     except Exception as e:
         print(f"❌ Error durante el registro: {e}")
         print("Por favor, intenta de nuevo.")
@@ -134,29 +134,29 @@ def iniciar_sesion():
     print("\n--- 🔓 INICIAR SESIÓN ---")
     max_intentos_pw = 3
     intento_pw = 0
-    
-    # PASO 1: VALIDAR NÚMERO DE EMPLEADO (con 3 intentos internos en validaciones.py)
-    num = validaciones.validar_acceso()  # Esta función ya maneja sus propios 3 intentos
-    
+
+    # PASO 1: VALIDAR NÚMERO DE USUARIO REGISTRADO (contra usuarios.json)
+    num = validaciones.validar_usuario_sesion()  # Valida SOLO contra usuarios.json
+
     if num is None:
-        print("❌ No se pudo validar el número de empleado. Vuelve al menú.")
+        print("❌ No se pudo validar el usuario. Vuelve al menú.")
         return None
-    
+
     # PASO 2: VALIDAR CONTRASEÑA (máximo 3 intentos aquí)
     while intento_pw < max_intentos_pw:
         pw = getpass.getpass(f"Contraseña [{intento_pw + 1}/{max_intentos_pw}]: ")
-        
+
         # PASO 3: BUSCAR EN usuarios.json
         for u in cargar_datos(ARCHIVO_USUARIOS):
             if u["num_empleado"] == num and u["password"] == pw:
                 print(f"\n✅ Bienvenido/a, {u['nombre']} {u['apellidos']} (ID: {u['num_empleado']})")
                 return u
-        
+
         intento_pw += 1
         if intento_pw < max_intentos_pw:
             print("❌ Contraseña incorrecta. Intenta de nuevo.")
             print(f"🔄 Intentos restantes: {max_intentos_pw - intento_pw}\n")
-    
+
     print(f"❌ Has agotado los {max_intentos_pw} intentos de contraseña. Vuelve al menú.")
     return None
 
