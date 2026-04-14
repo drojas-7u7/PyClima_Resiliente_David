@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-ARCHIVO_BASE = "datos_clima.json"
+ARCHIVO_BASE = "datos_clima.json"       #Archivo JSON con los datos históricos de clima
 
 
-def generar_reporte_visual_pro():
-    if not os.path.exists(ARCHIVO_BASE):
+def generar_reporte_visual_pro():    #Para generar la gráfica con temperaturas por distrito
+    if not os.path.exists(ARCHIVO_BASE):  #Valida la existencia del archivo de datos
         return
 
     try:
-        with open(ARCHIVO_BASE, "r", encoding="utf-8") as f:
+        with open(ARCHIVO_BASE, "r", encoding="utf-8") as f:  #Carga los datos y filtrado
             datos = json.load(f)
         pares_validos = [
             (d.get("distrito", "Desconocido"), d.get("temp", d.get("temperatura")))
@@ -28,7 +28,7 @@ def generar_reporte_visual_pro():
     except (json.JSONDecodeError, KeyError):
         return
 
-    sns.set_theme(style="white")
+    sns.set_theme(style="white")  #Estilo de la gráfica
     plt.figure(figsize=(10, 6))
 
     sns.barplot(
@@ -41,7 +41,7 @@ def generar_reporte_visual_pro():
         errorbar=None,
     )
 
-    media = np.mean(temps)
+    media = np.mean(temps)   #Para dibujar la línea de la media general de temperaturas
     plt.axhline(
         y=media,
         color="#e74c3c",
@@ -49,7 +49,7 @@ def generar_reporte_visual_pro():
         label=f"Media: {media:.2f} C",
     )
 
-    # Calcular media de frío y calor
+    # Calcula y dibuja media de frío y calor
     temps_frio = [t for t in temps if t < media]
     temps_calor = [t for t in temps if t > media]
     media_frio = np.mean(temps_frio) if temps_frio else media
@@ -71,16 +71,16 @@ def generar_reporte_visual_pro():
         label=f"Media Calor: {media_calor:.2f} C",
     )
 
-    plt.title("ESTADO TERMICO HISTORICO POR DISTRITO", fontweight="bold")
+    plt.title("Perfil térmico por distrito (Media general)", fontweight="bold")
     plt.ylabel("Temperatura (C)")
     plt.legend()
     plt.xticks(rotation=45, ha="right")
 
-    plt.tight_layout()
+    plt.tight_layout()   #Títulos y etiquetas para mejor visualización
     plt.show()
 
 
-def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
+def generar_reporte_distrito_especifico(distrito_preseleccionado=None):   #Genera gráfica de evolución térmica para un distrito específico
     if not os.path.exists(ARCHIVO_BASE):
         print("Archivo de datos no encontrado.")
         return
@@ -103,10 +103,10 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
         print("No hay distritos registrados en la base de datos.")
         return
 
-    if distrito_preseleccionado:
+    if distrito_preseleccionado: #Obtención de lista de distritos disponibles
         distrito_seleccionado = distrito_preseleccionado
         if distrito_seleccionado not in distritos_unicos:
-            print(f"No existe informacion para el distrito: {distrito_seleccionado}")
+            print(f"No existe información para el distrito: {distrito_seleccionado}")
             return
     else:
         print("\n" + "=" * 50)
@@ -117,23 +117,23 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
         print("=" * 50)
 
         try:
-            seleccion = int(input("\nSelecciona el numero del distrito (o 0 para cancelar): "))
+            seleccion = int(input("\nSelecciona el número del distrito (o 0 para cancelar): "))
 
             if seleccion == 0:
-                print("Operacion cancelada.")
+                print("Operación cancelada.")
                 return
 
             if seleccion < 1 or seleccion > len(distritos_unicos):
-                print("Seleccion invalida. Introduce un numero de la lista.")
+                print("Selección inválida. Introduce un número de la lista.")
                 return
 
             distrito_seleccionado = distritos_unicos[seleccion - 1]
 
         except ValueError:
-            print("Introduce un numero valido.")
+            print("Introduce un número válido.")
             return
 
-    datos_distrito = [d for d in datos if d.get("distrito", "") == distrito_seleccionado]
+    datos_distrito = [d for d in datos if d.get("distrito", "") == distrito_seleccionado]  #Filtrar los datos para sacar solo la información de temperatura y la fecha por distrito
 
     if not datos_distrito:
         print(f"No hay registros para {distrito_seleccionado}.")
@@ -142,7 +142,7 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
     fechas = [d.get("fecha", "N/A") for d in datos_distrito]
     temperaturas = [d.get("temp", d.get("temperatura", 0)) for d in datos_distrito]
 
-    sns.set_theme(style="white")
+    sns.set_theme(style="white")  #Gráfica de línea
     plt.figure(figsize=(12, 6))
 
     plt.plot(
@@ -176,7 +176,7 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
         linestyle=":",
         linewidth=1.5,
         alpha=0.7,
-        label=f"Media Frio: {media_frio:.2f} C",
+        label=f"Media Frío: {media_frio:.2f} C",
     )
 
     plt.axhline(
@@ -190,8 +190,8 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
 
     plt.fill_between(range(len(fechas)), temperaturas, alpha=0.3, color="#e74c3c")
 
-    plt.title(f"EVOLUCION TERMICA - {distrito_seleccionado.upper()}", fontweight="bold", fontsize=14)
-    plt.xlabel("Registros historicos (fechas)", fontweight="bold")
+    plt.title(f"EVOLUCION TÉRMICA - {distrito_seleccionado.upper()}", fontweight="bold", fontsize=14)
+    plt.xlabel("Registros históricos (fechas)", fontweight="bold")
     plt.ylabel("Temperatura (C)", fontweight="bold")
     plt.legend(loc="best", fontsize=10)
     plt.grid(True, alpha=0.3)
@@ -208,12 +208,12 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
     plt.show()
 
     print("\n" + "=" * 50)
-    print(f"ESTADISTICAS DE {distrito_seleccionado}:")
+    print(f"ESTADÍSTICAS DE {distrito_seleccionado}:")  #Imprime estadísticas del distrito seleccionado
     print("=" * 50)
     print(f"   Total de registros: {len(datos_distrito)}")
     print(f"   Temperatura media: {media_distrito:.2f} C")
-    print(f"   Temperatura maxima: {max(temperaturas):.2f} C")
-    print(f"   Temperatura minima: {min(temperaturas):.2f} C")
+    print(f"   Temperatura máxima: {max(temperaturas):.2f} C")
+    print(f"   Temperatura mínima: {min(temperaturas):.2f} C")
 
     # Estadísticas de frío y calor
     temps_frio = [t for t in temperaturas if t < media_distrito]
@@ -222,7 +222,7 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
     media_calor = np.mean(temps_calor) if temps_calor else media_distrito
 
     print(f"   ---")
-    print(f"   Media de Frio: {media_frio:.2f} C ({len(temps_frio)} registros)")
+    print(f"   Media de Frío: {media_frio:.2f} C ({len(temps_frio)} registros)")
     print(f"   Media de Calor: {media_calor:.2f} C ({len(temps_calor)} registros)")
     print("=" * 50 + "\n")
 
