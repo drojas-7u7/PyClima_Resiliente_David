@@ -304,14 +304,28 @@ def validar_usuario_sesion():
 
     return None
 
-# --- ZONA DE PRUEBAS TEMPORAL ---
-# Este bloque solo se ejecutará si lanzas este archivo directamente.
-# Si el DEV 1 importa tus funciones en su menu.py, esto no le molestará.
-if __name__ == "__main__":
-    print("\n--- 🧪 TEST DE VALIDACIÓN DE ZONA ---")
-    print("Vamos a probar la conexión con config.json y el autocompletado.")
+def validar_lluvia():
+    """
+    Solicita y valida la cantidad de lluvia (precipitaciones).
+    Rango permitido: 0 a 500 mm.
     
-    resultado_zona = validar_zona()
-    
-    if resultado_zona:
-        print(f"\n✅ ÉXITO: El sistema ha guardado la zona oficial -> '{resultado_zona}'")
+    DEV 1 / DEV 2: Llama a esta función sin parámetros.
+    Retorna: Un número float (ej. 15.5).
+    """
+    while True:
+        try:
+            entrada = input("Introduce la cantidad de lluvia (0 a 500 mm) [o 'c' para cancelar]: ").strip()
+            if entrada.lower() == 'c': raise KeyboardInterrupt
+            
+            lluvia = float(entrada)
+            
+            # La lluvia no puede ser negativa, y ponemos un tope lógico de 500mm
+            if 0 <= lluvia <= 500:
+                return lluvia  
+            else:
+                print(f"❌ Error: {lluvia} mm está fuera del rango lógico (0 a 500).")
+        
+        except ValueError:
+            print("❌ Error: La cantidad de lluvia debe ser un valor numérico (ejemplo: 12.5).")
+            
+        print("🔄 Inténtalo de nuevo.\n")
