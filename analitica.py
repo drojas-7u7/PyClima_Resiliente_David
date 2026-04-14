@@ -14,8 +14,13 @@ def generar_reporte_visual_pro():
     try:
         with open(ARCHIVO_BASE, "r", encoding="utf-8") as f:
             datos = json.load(f)
-        distritos = [d["distrito"] for d in datos]
-        temps = [d["temp"] for d in datos]
+        pares_validos = [
+            (d.get("distrito", "Desconocido"), d.get("temp", d.get("temperatura")))
+            for d in datos
+            if d.get("temp", d.get("temperatura")) is not None
+        ]
+        distritos = [distrito for distrito, _ in pares_validos]
+        temps = [temp for _, temp in pares_validos]
 
         if not temps:
             return
@@ -42,6 +47,28 @@ def generar_reporte_visual_pro():
         color="#e74c3c",
         linestyle="--",
         label=f"Media: {media:.2f} C",
+    )
+
+    # Calcular media de frío y calor
+    temps_frio = [t for t in temps if t < media]
+    temps_calor = [t for t in temps if t > media]
+    media_frio = np.mean(temps_frio) if temps_frio else media
+    media_calor = np.mean(temps_calor) if temps_calor else media
+
+    plt.axhline(
+        y=media_frio,
+        color="#3498db",
+        linestyle=":",
+        alpha=0.7,
+        label=f"Media Frio: {media_frio:.2f} C",
+    )
+
+    plt.axhline(
+        y=media_calor,
+        color="#f39c12",
+        linestyle=":",
+        alpha=0.7,
+        label=f"Media Calor: {media_calor:.2f} C",
     )
 
     plt.title("ESTADO TERMICO HISTORICO POR DISTRITO", fontweight="bold")
@@ -137,6 +164,30 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
         label=f"Media del distrito: {media_distrito:.2f} C",
     )
 
+    # Calcular media de frío y calor
+    temps_frio = [t for t in temperaturas if t < media_distrito]
+    temps_calor = [t for t in temperaturas if t > media_distrito]
+    media_frio = np.mean(temps_frio) if temps_frio else media_distrito
+    media_calor = np.mean(temps_calor) if temps_calor else media_distrito
+
+    plt.axhline(
+        y=media_frio,
+        color="#2980b9",
+        linestyle=":",
+        linewidth=1.5,
+        alpha=0.7,
+        label=f"Media Frio: {media_frio:.2f} C",
+    )
+
+    plt.axhline(
+        y=media_calor,
+        color="#e67e22",
+        linestyle=":",
+        linewidth=1.5,
+        alpha=0.7,
+        label=f"Media Calor: {media_calor:.2f} C",
+    )
+
     plt.fill_between(range(len(fechas)), temperaturas, alpha=0.3, color="#e74c3c")
 
     plt.title(f"EVOLUCION TERMICA - {distrito_seleccionado.upper()}", fontweight="bold", fontsize=14)
@@ -163,6 +214,16 @@ def generar_reporte_distrito_especifico(distrito_preseleccionado=None):
     print(f"   Temperatura media: {media_distrito:.2f} C")
     print(f"   Temperatura maxima: {max(temperaturas):.2f} C")
     print(f"   Temperatura minima: {min(temperaturas):.2f} C")
+
+    # Estadísticas de frío y calor
+    temps_frio = [t for t in temperaturas if t < media_distrito]
+    temps_calor = [t for t in temperaturas if t > media_distrito]
+    media_frio = np.mean(temps_frio) if temps_frio else media_distrito
+    media_calor = np.mean(temps_calor) if temps_calor else media_distrito
+
+    print(f"   ---")
+    print(f"   Media de Frio: {media_frio:.2f} C ({len(temps_frio)} registros)")
+    print(f"   Media de Calor: {media_calor:.2f} C ({len(temps_calor)} registros)")
     print("=" * 50 + "\n")
 
 

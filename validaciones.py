@@ -95,26 +95,32 @@ def validar_fecha():
     """
     Solicita y valida una fecha.
     Formato estricto: AAAA-MM-DD.
-    
-    DEV 1: Llama a esta función sin parámetros.
-    Retorna: Un string con la fecha correcta (ej. '2026-04-06').
+    Solo permite fechas actuales o pasadas (no futuras).
     """
     while True:
         entrada = input("Introduce la fecha (formato AAAA-MM-DD, ej: 2026-04-06) [o 'c' para cancelar]: ").strip()
         if entrada.lower() == 'c': raise KeyboardInterrupt
-        
+
         if not entrada:
             print("❌ Error: La fecha no puede estar vacía.")
-            continue 
-            
+            continue
+
         try:
-            # Comprueba matemáticamente si la fecha existe en el calendario real
-            datetime.strptime(entrada, "%Y-%m-%d")
+            # Comprueba si la fecha existe en el calendario real
+            fecha_ingresada = datetime.strptime(entrada, "%Y-%m-%d")
+            fecha_actual = datetime.now()
+
+            # Valida que no sea una fecha futura
+            if fecha_ingresada > fecha_actual:
+                print(f"❌ Error: No se permiten fechas futuras. La fecha ingresada ({entrada}) es posterior a hoy ({fecha_actual.strftime('%Y-%m-%d')}).")
+                print("🔄 Inténtalo de nuevo.\n")
+                continue
+
             return entrada
-            
+
         except ValueError:
             print("❌ Error: Formato incorrecto o fecha inexistente. Usa AAAA-MM-DD.")
-            
+
         print("🔄 Inténtalo de nuevo.\n")
 
 
@@ -178,20 +184,57 @@ def validar_zona():
         print("🔄 Inténtalo de nuevo.\n")
         
 def validar_acceso():
+    """
+    Valida que el empleado exista en empleados.json.
+    Devuelve el número de empleado si es válido, None si no.
+    PARA REGISTRO DE NUEVO USUARIO.
+
+    USO:
+    - auth.py (registrar_usuario): num_empleado = validar_acceso()
+    """
+    max_intentos = 3
+    intento = 0
+
     try:
-        with open("empleados.json", "r") as f:
+        with open("empleados.json", "r", encoding='utf-8') as f:
             lista_autorizados = json.load(f)
-        numero_ingresado = input("Introduce tu número de empleado: ")
-        if numero_ingresado in lista_autorizados:
-            print("Acceso concedido.")
-            return True
-        else:
-            print("Número de empleado no reconocido.")
-            return False
-            
     except FileNotFoundError:
-        print("Error: El archivo de empleados no existe.")
-        return False
+        print("❌ Error crítico: El archivo 'empleados.json' no existe.")
+        return None
+    except json.JSONDecodeError:
+        print("❌ Error crítico: El archivo 'empleados.json' está corrupto.")
+        return None
+
+    while intento < max_intentos:
+        try:
+            numero_ingresado = input(f"Introduce tu número de empleado [{intento + 1}/{max_intentos}] [o 'c' para cancelar]: ").strip()
+
+            if numero_ingresado.lower() == 'c':
+                raise KeyboardInterrupt
+
+            if not numero_ingresado:
+                print("❌ Error: El número de empleado no puede estar vacío.")
+                intento += 1
+                continue
+
+            # Búsqueda exacta en la lista
+            if numero_ingresado in lista_autorizados:
+                print(f"✅ Número de empleado {numero_ingresado} validado correctamente.")
+                return numero_ingresado  # Devolvemos el número válido
+            else:
+                intento += 1
+                intentos_restantes = max_intentos - intento
+                print(f"❌ Número de empleado NO reconocido.")
+                if intentos_restantes > 0:
+                    print(f"🔄 Intentos restantes: {intentos_restantes}\n")
+                else:
+                    print(f"❌ Has agotado los {max_intentos} intentos.\n")
+                    
+        except KeyboardInterrupt:
+            print("❌ Validación cancelada por el usuario.")
+            return None
+    
+    return None  # Si agota intentos, devuelve None
 
 
 def validar_duplicado(nueva_fecha, nueva_zona, historial):
@@ -202,21 +245,87 @@ def validar_duplicado(nueva_fecha, nueva_zona, historial):
     Retorna: True (si hay error de duplicado) o False (si todo está correcto).
     """
     for registro in historial:
-        if registro['fecha'] == nueva_fecha and registro['zona'].lower() == nueva_zona.lower():
+        if registro['fecha'] == nueva_fecha and registro['distrito'].lower() == nueva_zona.lower():
             print(f"❌ Error: Ya existen datos para '{nueva_zona}' en la fecha {nueva_fecha}.")
             print("⚠️ No se permiten registros duplicados para la misma zona el mismo día.")
             return True 
             
     return False
 
-# --- ZONA DE PRUEBAS TEMPORAL ---
-# Este bloque solo se ejecutará si lanzas este archivo directamente.
-# Si el DEV 1 importa tus funciones en su menu.py, esto no le molestará.
-if __name__ == "__main__":
-    print("\n--- 🧪 TEST DE VALIDACIÓN DE ZONA ---")
-    print("Vamos a probar la conexión con config.json y el autocompletado.")
+
+def validar_usuario_sesion():
+    """
+    Valida que el usuario exista en usuarios.json.
+    Devuelve el número de empleado si es válido, None si no.
+    PARA INICIAR SESIÓN SOLAMENTE.
+
+    USO:
+    - auth.py (iniciar_sesion): num_empleado = validar_usuario_sesion()
+    """
+    max_intentos = 3
+    intento = 0
+
+    try:
+        with open("usuarios.json", "r", encoding='utf-8') as f:
+            usuarios_registrados = json.load(f)
+            numeros_usuarios = [u.get("num_empleado") for u in usuarios_registrados]
+    except FileNotFoundError:
+        print("❌ Error crítico: El archivo 'usuarios.json' no existe.")
+        return None
+    except json.JSONDecodeError:
+        print("❌ Error crítico: El archivo 'usuarios.json' está corrupto.")
+        return None
+
+    while intento < max_intentos:
+        try:
+            numero_ingresado = input(f"Introduce tu número de empleado [{intento + 1}/{max_intentos}] [o 'c' para cancelar]: ").strip()
+
+            if numero_ingresado.lower() == 'c':
+                raise KeyboardInterrupt
+
+            if not numero_ingresado:
+                print("❌ Error: El número de empleado no puede estar vacío.")
+                intento += 1
+                continue
+
+            # Búsqueda exacta en usuarios registrados
+            if numero_ingresado in numeros_usuarios:
+                print(f"✅ Usuario {numero_ingresado} encontrado.")
+                return numero_ingresado
+            else:
+                intento += 1
+                intentos_restantes = max_intentos - intento
+                if intentos_restantes > 0:
+                    print(f"❌ Este usuario no está registrado. Intentos restantes: {intentos_restantes}")
+                else:
+                    print("❌ Has agotado los intentos.")
+        except KeyboardInterrupt:
+            raise
+
+    return None
+
+def validar_lluvia():
+    """
+    Solicita y valida la cantidad de lluvia (precipitaciones).
+    Rango permitido: 0 a 500 mm.
     
-    resultado_zona = validar_zona()
-    
-    if resultado_zona:
-        print(f"\n✅ ÉXITO: El sistema ha guardado la zona oficial -> '{resultado_zona}'")
+    DEV 1 / DEV 2: Llama a esta función sin parámetros.
+    Retorna: Un número float (ej. 15.5).
+    """
+    while True:
+        try:
+            entrada = input("Introduce la cantidad de lluvia (0 a 500 mm) [o 'c' para cancelar]: ").strip()
+            if entrada.lower() == 'c': raise KeyboardInterrupt
+            
+            lluvia = float(entrada)
+            
+            # La lluvia no puede ser negativa, y ponemos un tope lógico de 500mm
+            if 0 <= lluvia <= 500:
+                return lluvia  
+            else:
+                print(f"❌ Error: {lluvia} mm está fuera del rango lógico (0 a 500).")
+        
+        except ValueError:
+            print("❌ Error: La cantidad de lluvia debe ser un valor numérico (ejemplo: 12.5).")
+            
+        print("🔄 Inténtalo de nuevo.\n")

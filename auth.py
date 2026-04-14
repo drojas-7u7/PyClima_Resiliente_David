@@ -1,56 +1,163 @@
 import json
 import os
 import getpass
+import validaciones
+import alertas
+import persistencia
 
 DB_EMPLEADOS = "empleados.json"
 ARCHIVO_USUARIOS = 'usuarios.json'
 ARCHIVO_CLIMA = 'datos_clima.json'
 
 def cargar_datos(archivo):
+    """Carga datos desde un archivo JSON. Retorna una lista vacía si el archivo no existe o está corrupto."""
     if not os.path.exists(archivo): return []
     try:
         with open(archivo, 'r', encoding='utf-8') as f: return json.load(f)
-    except: return []
+    except json.JSONDecodeError:
+        print(f"⚠️ Advertencia: El archivo '{archivo}' está corrupto o tiene formato inválido.")
+        return []
+    except Exception as e:
+        print(f"⚠️ Advertencia: No se pudo leer '{archivo}': {e}")
+        return []
 
 def guardar_datos(archivo, datos):
     with open(archivo, 'w', encoding='utf-8') as f:
         json.dump(datos, f, indent=4, ensure_ascii=False)
+
+def _obtener_temperatura_registro(registro):
+    return registro.get("temp", registro.get("temperatura", 0))
+
+def _pedir_float_editable(mensaje, valor_actual, minimo=None, maximo=None):
+    while True:
+        entrada = input(f"{mensaje} (actual: {valor_actual}) [Enter para mantener]: ").strip()
+        if not entrada:
+            return float(valor_actual)
+
+        try:
+            valor = float(entrada)
+        except ValueError:
+            print("❌ Error: Debes introducir un valor numérico válido.")
+            continue
+
+        if minimo is not None and valor < minimo:
+            print(f"❌ Error: El valor no puede ser menor que {minimo}.")
+            continue
+        if maximo is not None and valor > maximo:
+            print(f"❌ Error: El valor no puede ser mayor que {maximo}.")
+            continue
+
+        return valor
+
+def _pedir_distrito_editable(distrito_actual):
+    try:
+        with open("config.json", "r", encoding="utf-8") as archivo:
+            distritos = json.load(archivo).get("distritos_oficiales", [])
+    except (FileNotFoundError, json.JSONDecodeError):
+        print("❌ No se pudo validar el distrito contra config.json.")
+        return distrito_actual
+
+    mapa = {d.lower(): d for d in distritos}
+
+    while True:
+        entrada = input(f"Nuevo distrito (actual: {distrito_actual}) [Enter para mantener]: ").strip()
+        if not entrada:
+            return distrito_actual
+
+        zona_normalizada = entrada.lower()
+        if zona_normalizada in mapa:
+            return mapa[zona_normalizada]
+
+        print("❌ Distrito no reconocido. Introduce un distrito oficial o pulsa Enter para mantener el actual.")
 
 def imprimir_detalle(r, idx=None):
     id_txt = f"ID: {idx} | " if idx is not None else ""
     edit_txt = " [EDITADO]" if r.get("editado") else ""
     alertas = ", ".join(r.get("alertas", [])) if r.get("alertas") else "Ninguna"
     print(f"{id_txt}Fecha: {r['fecha']} | Distrito: {r['distrito']} | Zona: {r.get('zona', 'N/A')}")
-    print(f"      Temp: {r['temp']}°C | Hum: {r['humedad']}% | Viento: {r['viento']}km/h")
+    print(f"      Temp: {_obtener_temperatura_registro(r)}°C | Hum: {r['humedad']}% | Viento: {r['viento']}km/h")
     print(f"      Lluvia: {r['lluvia']}mm | Alertas: {alertas}{edit_txt}")
     print("-" * 75)
 
 def registrar_usuario():
-    print("\n--- REGISTRO ---")
-    nombre = input("Nombre: ")
-    apellidos = input("Apellidos: ")
-    while True:
-        num = input("Número empleado (6 dígitos): ")
-        if num.isdigit() and len(num) == 6: break
-        print("Error: Deben ser 6 números.")
-    while True:
-        pw = getpass.getpass("Contraseña (8+ alfanuméricos): ")
-        if len(pw) >= 8 and pw.isalnum(): break
-        print("Error: Mínimo 8 caracteres sin símbolos.")
-    
-    usuarios = cargar_datos(ARCHIVO_USUARIOS)
-    usuarios.append({"nombre": nombre, "apellidos": apellidos, "num_empleado": num, "password": pw})
-    guardar_datos(ARCHIVO_USUARIOS, usuarios)
-    print("Registro exitoso.")
+    try:
+        print("\n--- 📝 REGISTRO DE NUEVO USUARIO ---")
+
+        # PASO 1: VALIDAR QUE SEA EMPLEADO AUTORIZADO (contra empleados.json)
+        print("\n[PASO 1/3] Verificación de autenticidad del empleado")
+        print("-" * 50)
+        num_empleado = validaciones.validar_acceso()  # Valida SOLO contra empleados.json
+
+        if num_empleado is None:
+            print("❌ No se puede continuar sin un número de empleado válido.")
+            return  # Cancela el registro
+
+        usuarios = cargar_datos(ARCHIVO_USUARIOS)
+        if any(u.get("num_empleado") == num_empleado for u in usuarios):
+            print("❌ Este número de empleado ya tiene un usuario registrado.")
+            return
+
+        # PASO 2: RECOPILAR DATOS PERSONALES
+        print("\n[PASO 2/3] Información personal")
+        print("-" * 50)
+        nombre = input("Nombre: ").strip()
+        apellidos = input("Apellidos: ").strip()
+
+        if not nombre or not apellidos:
+            print("❌ Error: Nombre y apellidos no pueden estar vacíos.")
+            return
+
+        # PASO 3: ESTABLECER CONTRASEÑA
+        print("\n[PASO 3/3] Identificador de acceso")
+        print("-" * 50)
+        while True:
+            pw = getpass.getpass("Contraseña (8+ alfanuméricos): ")
+            if len(pw) >= 8 and pw.isalnum():
+                break
+            print("Error: Mínimo 8 caracteres sin símbolos.")
+
+        # GUARDAR REGISTRO
+        usuarios.append({
+            "nombre": nombre,
+            "apellidos": apellidos,
+            "num_empleado": num_empleado,  # Número validado contra empleados.json
+            "password": pw
+        })
+        guardar_datos(ARCHIVO_USUARIOS, usuarios)
+        print("\n✅ Registro exitoso. Ya puedes iniciar sesión.")
+
+    except Exception as e:
+        print(f"❌ Error durante el registro: {e}")
+        print("Por favor, intenta de nuevo.")
 
 def iniciar_sesion():
-    num = input("Número empleado: ")
-    pw = getpass.getpass("Contraseña: ")
-    for u in cargar_datos(ARCHIVO_USUARIOS):
-        if u["num_empleado"] == num and u["password"] == pw:
-            print(f"\n✅ Bienvenido/a, {u['nombre']} {u['apellidos']} (ID Operario: {u['num_empleado']})")
-            return u
-    print("Datos incorrectos.")
+    print("\n--- 🔓 INICIAR SESIÓN ---")
+    max_intentos_pw = 3
+    intento_pw = 0
+
+    # PASO 1: VALIDAR NÚMERO DE USUARIO REGISTRADO (contra usuarios.json)
+    num = validaciones.validar_usuario_sesion()  # Valida SOLO contra usuarios.json
+
+    if num is None:
+        print("❌ No se pudo validar el usuario. Vuelve al menú.")
+        return None
+
+    # PASO 2: VALIDAR CONTRASEÑA (máximo 3 intentos aquí)
+    while intento_pw < max_intentos_pw:
+        pw = getpass.getpass(f"Contraseña [{intento_pw + 1}/{max_intentos_pw}]: ")
+
+        # PASO 3: BUSCAR EN usuarios.json
+        for u in cargar_datos(ARCHIVO_USUARIOS):
+            if u["num_empleado"] == num and u["password"] == pw:
+                print(f"\n✅ Bienvenido/a, {u['nombre']} {u['apellidos']} (ID: {u['num_empleado']})")
+                return u
+
+        intento_pw += 1
+        if intento_pw < max_intentos_pw:
+            print("❌ Contraseña incorrecta. Intenta de nuevo.")
+            print(f"🔄 Intentos restantes: {max_intentos_pw - intento_pw}\n")
+
+    print(f"❌ Has agotado los {max_intentos_pw} intentos de contraseña. Vuelve al menú.")
     return None
 
 def consultar_y_editar_historial(num_empleado):
@@ -76,12 +183,39 @@ def consultar_y_editar_historial(num_empleado):
             if confirmar == "si":
                 try:
                     print("\n--- INTRODUCE LOS NUEVOS DATOS CORRECTOS ---")
-                    
-                    registros[idx]["distrito"] = input(f"Nuevo Distrito (actual: {registros[idx]['distrito']}): ").strip().title()
-                    registros[idx]["temp"] = float(input(f"Nueva Temperatura (actual: {registros[idx]['temp']}): "))
-                    registros[idx]["humedad"] = int(input(f"Nueva Humedad % (actual: {registros[idx]['humedad']}): "))
-                    registros[idx]["viento"] = float(input(f"Nueva Vel. Viento km/h (actual: {registros[idx]['viento']}): "))
-                    registros[idx]["lluvia"] = float(input(f"Nueva Lluvia mm (actual: {registros[idx]['lluvia']}): "))
+
+                    distrito_actual = registros[idx].get("distrito", "")
+                    temp_actual = _obtener_temperatura_registro(registros[idx])
+                    humedad_actual = registros[idx].get("humedad", 0)
+                    viento_actual = registros[idx].get("viento", 0)
+                    lluvia_actual = registros[idx].get("lluvia", 0)
+
+                    distrito_final = _pedir_distrito_editable(distrito_actual)
+                    temp_final = _pedir_float_editable("Nueva Temperatura", temp_actual, -20, 50)
+                    humedad_final = _pedir_float_editable("Nueva Humedad %", humedad_actual, 0, 100)
+                    viento_final = _pedir_float_editable("Nueva Vel. Viento km/h", viento_actual, 0, 150)
+                    lluvia_final = _pedir_float_editable("Nueva Lluvia mm", lluvia_actual, 0)
+
+                    for i, reg in enumerate(registros):
+                        if i != idx and reg.get("fecha") == registros[idx].get("fecha") and reg.get("distrito", "").lower() == distrito_final.lower():
+                            print("❌ La corrección generaría un duplicado para esa fecha y distrito.")
+                            return
+
+                    umbrales = persistencia.obtener_umbrales_alerta()
+                    alertas_activas = alertas.evaluar_alertas({
+                        "temperatura": temp_final,
+                        "humedad": humedad_final,
+                        "viento": viento_final,
+                        "lluvia": lluvia_final,
+                    }, umbrales)
+
+                    registros[idx]["distrito"] = distrito_final
+                    registros[idx]["temp"] = temp_final
+                    registros[idx]["temperatura"] = temp_final
+                    registros[idx]["humedad"] = humedad_final
+                    registros[idx]["viento"] = viento_final
+                    registros[idx]["lluvia"] = lluvia_final
+                    registros[idx]["alertas"] = alertas_activas
                     registros[idx]["editado"] = True 
                     
                     guardar_datos(ARCHIVO_CLIMA, registros)

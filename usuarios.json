@@ -46,5 +46,11 @@
         "apellidos": "Rodriguez",
         "num_empleado": "118273",
         "password": "2018mEsa"
+    },
+    {
+        "nombre": "Pepe",
+        "apellidos": "Lozano",
+        "num_empleado": "101010",
+        "password": "Mesa2026"
     }
 ]

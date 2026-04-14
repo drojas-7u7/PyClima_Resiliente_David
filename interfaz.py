@@ -58,6 +58,32 @@ class InterfazPyClima:
     def _mostrar_separador(self):
         print("-" * 50)
 
+    def _normalizar_distrito_oficial(self, distrito):
+        distritos_oficiales = persistencia.obtener_distritos_permitidos()
+        mapa_distritos = {item.lower(): item for item in distritos_oficiales}
+        return mapa_distritos.get(distrito.strip().lower())
+
+    def _pedir_numero_editable(self, etiqueta, valor_actual, minimo=None, maximo=None):
+        while True:
+            entrada = input(f"{etiqueta} (actual: {valor_actual}) [Enter para mantener]: ").strip()
+            if not entrada:
+                return float(valor_actual)
+
+            try:
+                valor = float(entrada)
+            except ValueError:
+                print("❌ Introduce un valor numérico válido.")
+                continue
+
+            if minimo is not None and valor < minimo:
+                print(f"❌ El valor no puede ser menor que {minimo}.")
+                continue
+            if maximo is not None and valor > maximo:
+                print(f"❌ El valor no puede ser mayor que {maximo}.")
+                continue
+
+            return valor
+
     def registrar_datos(self):
         """Flujo completo de registro con validaciones"""
         self._mostrar_encabezado("📝 REGISTRAR NUEVOS DATOS CLIMÁTICOS")
@@ -65,10 +91,10 @@ class InterfazPyClima:
         
         while True:
             try:
-                print("\n[1/5] FECHA DEL REGISTRO")
+                print("\n[1/6] FECHA DEL REGISTRO")
                 fecha = validaciones.validar_fecha()
                 
-                print("\n[2/5] ZONA/DISTRITO")
+                print("\n[2/6] ZONA/DISTRITO")
                 distrito = validaciones.validar_zona()
                 if not distrito: return
                 
@@ -77,15 +103,18 @@ class InterfazPyClima:
                     if input("¿Desea ingresar datos nuevamente? (s/n): ").lower() != 's': return
                     continue
                 
-                print("\n[3/5] TEMPERATURA")
+                print("\n[3/6] TEMPERATURA")
                 temperatura = validaciones.validar_temperatura()
                 
-                print("\n[4/5] HUMEDAD")
+                print("\n[4/6] HUMEDAD")
                 humedad = validaciones.validar_humedad()
                 
-                print("\n[5/5] VELOCIDAD DEL VIENTO")
+                print("\n[5/6] VELOCIDAD DEL VIENTO")
                 viento = validaciones.validar_viento()
-                
+
+                print("\n[6/6] PRECIPITACIONES (LLUVIA)")
+                lluvia = validaciones.validar_lluvia()
+
                 print("\n" + "="*50)
                 print("✅ DATOS VALIDADOS EXITOSAMENTE")
                 print("="*50)
@@ -309,16 +338,18 @@ class InterfazPyClima:
             lluvia_actual = registro.get("lluvia", 0.0)
 
             nuevo_distrito = input(f"Nuevo distrito (actual: {distrito_actual}) [Enter para mantener]: ").strip()
-            nueva_temp = input(f"Nueva temperatura (actual: {temp_actual}) [Enter para mantener]: ").strip()
-            nueva_humedad = input(f"Nueva humedad (actual: {humedad_actual}) [Enter para mantener]: ").strip()
-            nuevo_viento = input(f"Nuevo viento (actual: {viento_actual}) [Enter para mantener]: ").strip()
-            nueva_lluvia = input(f"Nueva lluvia (actual: {lluvia_actual}) [Enter para mantener]: ").strip()
+            distrito_final = distrito_actual
+            if nuevo_distrito:
+                distrito_normalizado = self._normalizar_distrito_oficial(nuevo_distrito)
+                if not distrito_normalizado:
+                    print("❌ El distrito introducido no es un distrito oficial de Madrid.")
+                    return
+                distrito_final = distrito_normalizado
 
-            distrito_final = nuevo_distrito.title() if nuevo_distrito else distrito_actual
-            temp_final = float(nueva_temp) if nueva_temp else float(temp_actual)
-            humedad_final = float(nueva_humedad) if nueva_humedad else float(humedad_actual)
-            viento_final = float(nuevo_viento) if nuevo_viento else float(viento_actual)
-            lluvia_final = float(nueva_lluvia) if nueva_lluvia else float(lluvia_actual)
+            temp_final = self._pedir_numero_editable("Nueva temperatura", temp_actual, -20, 50)
+            humedad_final = self._pedir_numero_editable("Nueva humedad", humedad_actual, 0, 100)
+            viento_final = self._pedir_numero_editable("Nuevo viento", viento_actual, 0, 150)
+            lluvia_final = self._pedir_numero_editable("Nueva lluvia", lluvia_actual, 0)
 
             for i, reg in enumerate(self.datos):
                 if i != indice_real and reg.get("fecha") == registro.get("fecha") and reg.get("distrito", "").lower() == distrito_final.lower():
@@ -460,36 +491,44 @@ class InterfazPyClima:
                 input("\nPresione Enter para volver al menú principal...")
                 break
 
-            # 2. Extraemos los tipos de alerta únicos para crear el filtro dinámico
-            tipos_alertas = set()
-            for item in alertas_encontradas:
-                for alerta in item['alertas']:
-                    tipos_alertas.add(alerta)
-            lista_tipos = list(tipos_alertas)
+            # 2. Definimos las categorías fijas de alerta basadas en los umbrales
+            lista_tipos = [
+                "Alerta de calor",
+                "Alerta de frío",
+                "Alerta de viento",
+                "Alerta de humedad",
+                "Alerta de lluvia"
+            ]
 
             # 3. Mostrar menú principal del panel de alertas
             print(f"\n⚠️  Se detectaron {len(alertas_encontradas)} zonas con alertas activas.")
             print("\nOPCIONES DEL PANEL:")
-            print("1. 👁️  Ver TODAS las alertas activas")
-            print("2. 🔍 Filtrar por tipo de alerta")
-            print("3. ⬅️  Volver al menú principal")
-            print("4. 🚪 Salir del sistema")
+            print("1. 📅 Ver alertas de hoy")
+            print("2. 📋 Historial de alertas")
+            print("3. 🔍 Filtrar por tipo de alerta")
+            print("4. ⬅️  Volver al menú principal")
+            print("5. 🚪 Salir del sistema")
 
-            opcion = input("\nSeleccione una opción (1-4): ").strip()
+            opcion = input("\nSeleccione una opción (1-5): ").strip()
 
             if opcion == "1":
-                self._imprimir_alertas(alertas_encontradas)
+                self._mostrar_alertas_hoy(alertas_encontradas)
                 # Mostramos menú posterior y comprobamos si quiere volver al menú principal
                 if self._menu_post_alerta() == "menu_principal": break
 
             elif opcion == "2":
+                self._imprimir_alertas(alertas_encontradas)
+                # Mostramos menú posterior y comprobamos si quiere volver al menú principal
+                if self._menu_post_alerta() == "menu_principal": break
+
+            elif opcion == "3":
                 accion = self._filtrar_y_mostrar_alertas(alertas_encontradas, lista_tipos)
                 if accion == "menu_principal": break
 
-            elif opcion == "3":
+            elif opcion == "4":
                 break # Rompe el bucle y vuelve al menú principal
 
-            elif opcion == "4":
+            elif opcion == "5":
                 self.salir()
                 exit()
             else:
@@ -593,15 +632,55 @@ class InterfazPyClima:
         for item in lista_alertas:
             print(f"📍 ZONA: {item['zona']} | 📅 FECHA: {item['fecha']}")
             print("-" * 45)
-            for alerta in item['alertas']: 
+            for alerta in item['alertas']:
                 print(f"  → {alerta}")
+        print("="*50)
+
+    def _mostrar_alertas_hoy(self, lista_alertas):
+        """Muestra solo las alertas del día en curso"""
+        fecha_hoy = datetime.now().strftime('%Y-%m-%d')
+        alertas_hoy = [item for item in lista_alertas if item['fecha'] == fecha_hoy]
+
+        print("\n" + "="*50)
+        print(f"📅 ALERTAS DEL DIA: {fecha_hoy}")
+        print("="*50)
+
+        if not alertas_hoy:
+            print(f"\n✅ No hay alertas registradas para hoy ({fecha_hoy})")
+        else:
+            for item in alertas_hoy:
+                print(f"📍 ZONA: {item['zona']} | 📅 FECHA: {item['fecha']}")
+                print("-" * 45)
+                for alerta in item['alertas']:
+                    print(f"  → {alerta}")
         print("="*50)
 
     def _filtrar_y_mostrar_alertas(self, alertas_encontradas, lista_tipos):
         """Maneja el filtrado de alertas y lanza la navegación posterior"""
         print("\n🚨 TIPOS DE ALERTA ACTUALMENTE ACTIVOS:")
+        
+        # 1. Subimos el diccionario de palabras clave aquí arriba
+        palabras_clave = {
+            "Alerta de calor": ["calor", "temperatura elevada"],
+            "Alerta de frío": ["frío", "helada", "frio"],
+            "Alerta de viento": ["viento"],
+            "Alerta de humedad": ["humedad", "sequedad"],
+            "Alerta de lluvia": ["lluvia"]
+        }
+
+        # 2. Imprimimos el menú calculando cuántas alertas hay de cada tipo
         for i, tipo in enumerate(lista_tipos, 1):
-            print(f"   {i}. {tipo}")
+            claves = palabras_clave[tipo]
+            contador = 0
+            # Contamos cuántas alertas coinciden con este tipo
+            for item in alertas_encontradas:
+                for alerta in item['alertas']:
+                    if any(clave in alerta.lower() for clave in claves):
+                        contador += 1
+                        break # Si encuentra una, suma 1 y pasa a la siguiente zona
+            
+            # Mostramos la opción con el contador
+            print(f"   {i}. {tipo} ({contador} detectadas)")
             
         # --- AÑADIMOS LA OPCIÓN DE ESCAPE (Dinámica) ---
         opcion_volver = len(lista_tipos) + 1
@@ -610,22 +689,25 @@ class InterfazPyClima:
         try:
             entrada = input(f"\nSeleccione la alerta que desea investigar (1-{opcion_volver}) [o 'c' para cancelar]: ").strip()
             
-            # Si usa el truco de la Fase B para cancelar
             if entrada.lower() == 'c':
                 return "panel_alertas"
                 
             seleccion = int(entrada)
             
-            # Si elige la opción extra de volver
             if seleccion == opcion_volver:
                 return "panel_alertas"
                 
-            # Si elige una alerta válida
             elif 1 <= seleccion <= len(lista_tipos):
                 alerta_buscada = lista_tipos[seleccion - 1]
+                claves = palabras_clave[alerta_buscada]
                 
-                # Filtramos la lista buscando la alerta exacta
-                filtradas = [item for item in alertas_encontradas if alerta_buscada in item['alertas']]
+                # 3. Filtramos la lista buscando las coincidencias
+                filtradas = []
+                for item in alertas_encontradas:
+                    for alerta in item['alertas']:
+                        if any(clave in alerta.lower() for clave in claves):
+                            filtradas.append(item)
+                            break
                 
                 print(f"\n📊 Resultados filtrados para: {alerta_buscada}")
                 self._imprimir_alertas(filtradas)
