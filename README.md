@@ -14,7 +14,7 @@ Aporta datos al Departamento de Resiliencia Urbana y Smart City del Ayuntamiento
 - [Sistema de Alertas](#sistema-de-alertas)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 
-## ✨ Características Principales
+## ✨ Características Principales ✨
 
 ### 1. **Interfaz Intuitiva**
 - Menú principal claro y navegable
@@ -22,14 +22,16 @@ Aporta datos al Departamento de Resiliencia Urbana y Smart City del Ayuntamiento
 - Mensajes de error comprensibles sin crashes
 
 ### 2. **Registro Robusto de Datos**
-- Captura validada de: Fecha, Zona, Temperatura, Humedad, Viento, Lluvia
+- Captura validada de: Fecha, Zona, Temperatura, Humedad, Viento, Precipitación
 - Validación automática contra distritos oficiales de Madrid
+- Validación automática de rangos de vaidez de cada dato
 - Confirmación antes de guardar
 - Prevención de duplicados
+- Prevención de fechas futuras
 
 ### 3. **Sistema de Alertas Inteligente** ⚠️
 
-Detección automática de **3 tipos principales de riesgos**:
+Detección automática de **4 tipos principales de riesgos**:
 
 #### 🔴 **Calor Extremo**
 - Nivel Crítico: > 45°C
@@ -39,30 +41,41 @@ Detección automática de **3 tipos principales de riesgos**:
 - Nivel Crítico: > 70 km/h
 - Nivel Alto: > 50 km/h
 
-#### 🟡 **Lluvia/Humedad Anómala**
+#### 🟡 **Humedad Anómala**
+- Lluvia activa
+- Humedad muy alta (> 95%)
+- Humedad muy baja (< 20%)
+
+#### 🟡 **Precipitación**
 - Lluvia activa
 - Humedad muy alta (> 95%)
 - Humedad muy baja (< 20%)
 
 ### 4. **Consulta y Análisis**
-- Filtrado por zona/distrito
+- Filtrado por zona/distrito/usuario
 - Visualización de histórico completo
-- Listados organizados
+- Visualización de alertas
 
-## 🚀 Instalación Rápida
+## 🚀 Instalación (Rápida) 🚀 
 
 ### 1. Crear entorno virtual
-```bash
+``` bash
 python -m venv .venv
-```
+o bien: 
+python3 -m venv .venv
 
-### 2. Activar entorno (Windows PowerShell)
+### 2. Activar entorno 
+``` bash
+source venv/bin/activate
+
+En Windows PowerShell: 
+``` bash
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
 ### 3. Instalar dependencias
-```bash
+``` bash
 pip install -r requirements.txt
 ```
 
@@ -71,28 +84,29 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## 📖 Cómo Usar
+## 📖 Cómo Usar 📖
 
 ### Menú Principal
 ```
-1. Registrar Nuevos Datos Climáticos
-2. Consultar Datos por Zona
-3. Ver Histórico Completo
-4. Ver Alertas Activas
-5. Salir del Sistema
+1. 📋 Registrar Datos Climáticos        
+2. 🔍 Consultar Datos                    
+3. 📚 Ver Histórico (Todas las Zonas)    
+4. 📢 Alertas Activas                   
+5. 🔙 Salir 
 ```
 
 ### Flujo de Registro
 1. Ingresa fecha (DD/MM/AAAA)
-2. Selecciona zona (21 distritos de Madrid)
-3. Captura datos: temperatura, humedad, viento, lluvia
-4. Revisa resumen
-5. Sistema analiza alertas automáticamente
-6. Confirma guardado en JSON
+2. Ingresa zona (21 distritos de Madrid)
+3. Captura datos: temperatura, humedad, velocidad del viento, precipitaciones (lluvia)
+4. Indica si los datos se han validado
+5. Analiza alertas automáticamente y las muestra
+6. Informa de los datos a guardar y solicita confirmación
+7. Confirma o no guardado en JSON
 
 El sistema **nunca falla** con inputs inválidos - solo pide reintentar.
 
-## ⚠️ Sistema de Alertas
+## ⚠️ Sistema de Alertas ⚠️
 
 ### Análisis Inteligente
 - Detecta automáticamente condiciones de riesgo
@@ -100,62 +114,97 @@ El sistema **nunca falla** con inputs inválidos - solo pide reintentar.
 - Sugiere acciones recomendadas
 
 ### Umbrales Configurables
-Edita en `validaciones.py`:
-```python
-UMBRAL_TEMP_CALOR = 40.0      # °C
-UMBRAL_VIENTO_ALTO = 50.0     # km/h
-UMBRAL_HUMEDAD_BAJA = 20.0    # %
+Está en `alertas.py`:
+
+``` bash
+t_roja = umbrales.get("temp_max_roja", 40.0)
+    t_naranja = umbrales.get("temp_max_naranja", 35.0)  #Evalúa condiciones climáticas, basadas en umbrales definidos en el sistema
+    t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
+    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    v_max = umbrales.get("viento_max", 40)
+    h_min = umbrales.get("humedad_min", 15)
+    ll_naranja = umbrales.get("lluvia_naranja", 20.0)
+    ll_roja = umbrales.get("lluvia_roja", 50.0)
+
+UMBRAL_TEMP_CALOR_NARANJA = 35.0      # °C
+UMBRAL_TEMP_FRIO_NARANJA = 2.0      # °C
+UMBRAL_TEMP_FRIO_ROJA = -2.0      # °C
+UMBRAL_VIENTO_ALTO = 40.0     # km/h
+UMBRAL_HUMEDAD_BAJA = 15.0    # %
 UMBRAL_HUMEDAD_ALTA = 95.0    # %
+UMBRAL_LLUVIA_NARANJA = 20.0  # mm
+UMBRAL_LLUVIA_ROJA = 50.0 # mm
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto 📁
 
 ```
 PyClima_Resiliente/
-├── main.py              # Interfaz de usuario (DEV 4)
-├── persistencia.py      # Lógica JSON (DEV 3)
-├── validaciones.py      # Alertas y validaciones (DEV 4)
-├── config.json         # Distritos de Madrid
-├── datos_clima.json    # Base de datos
+├── main.py              → Punto de entrada y autenticación
+├── interfaz.py          → Menú principal y operaciones
+├── auth.py              → Gestión de usuarios/sesiones
+├── persistencia.py      → Lectura/escritura JSON
+├── validaciones.py      → Validación de entrada
+├── alertas.py           → Evaluación de riesgos climáticos
+├── analitica.py         → Generación de gráficos
+├── test_completo.py     → Test realizados
+├── config.json          → Configuración (umbrales, distritos)
+├── datos_clima.json     → Base de datos histórica
+├── usuarios.json        → Usuarios registrados
+└── empleados.json       → Empleados autorizados
 ├── requirements.txt    # Dependencias
-└── README.md          # Este archivo
+└── README.md           # Este archivo
+└── arquitectura.md     # Arquitectura y funciones 
+└── .gitignore          # Especifica archivos o carpetas a ignorar en el repositorio remoto
+└── .gittattributes     # Define atributos específicos para ciertos archivos 
+└── REPORTE_TESTS.txt   # Resumen fina de pruebas
 ```
 
 ## 👥 Desarrollo
 
-**DEV 4: Interfaz + Alertas**
-- Interfaz de consola
-- Sistema de detectores de riesgo
-- Validación robusta
-- Experiencia del usuario
+**SCRUM MASTER**
+- Coordinación general
+- Asignación de tareas y tiempos de desarrollo
+- Readme.md y requirements.txt
+
+**DEV 1: Lógica y Product Owner** 
+- Lógica principal
+- Relación con el cliente
+- Interfaz visual (beta)
+
+**DEV 2: Validaciones**
+- Definir validación de datos
+- Definir ayudas al usuario
+- Integrar pasos que no corten el flujo en caso de error
 
 **DEV 3: Persistencia JSON**
 - Lectura/escritura
 - Validación de duplicados
+- Nutrir bbdd
 
-**DEV 1: Lógica**
-- Coordinación general
+**DEV 4: Interfaz + Alertas**
+- Interfaz de consola
+- Experiencia del usuario
+- Sistema de alertas
 
 ## 🧪 Testing
 
 ```bash
-# Test simple
-python test_simple.py
-
-# Suite completa
-python test_alertas.py
+# Test completo
+python test_completo.py
 ```
 
 ## 📝 Estado
 
 - ✅ Interfaz completa
-- ✅ Sistema de alertas (3 tipos de riesgos)
+- ✅ Sistema de alertas (4 tipos de riesgos)
 - ✅ Validación robusta
-- ✅ Testing básico
-- ⏳ Integración con DEV 1
+- ✅ Testing completo
+- ⏳ Integración completa
+- 🟡 Interfaz visual (Beta)
 
 ---
 
 **Versión**: 1.0  
-**Fecha**: 3 de Abril de 2026  
-**Bootcamp**: AI4Inclusion - Ayuntamiento de Madrid
+**Fecha**: 16 de Abril de 2026  
+**Bootcamp**: AI4Inclusion - Los Guardianes del Dato
