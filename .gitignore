@@ -8,6 +8,8 @@ dist/
 
 # --- PYTHON (Archivos temporales y compilados) ---
 __pycache__/
+.pytest_cache/
+*.py[cod]
 *.py[cod]
 *$py.class
 *.so
