@@ -4,6 +4,7 @@ import getpass
 import validaciones
 import alertas
 import persistencia
+import pwinput
 
 DB_EMPLEADOS = 'empleados.json'
 ARCHIVO_USUARIOS = 'usuarios.json' #Carga de archivos a utilizar
@@ -110,7 +111,7 @@ def registrar_usuario():   #Función para registrar un nuevo usuario, validando 
         print("\n[PASO 3/3] Identificador de acceso")
         print("-" * 50)
         while True:
-            pw = getpass.getpass("Contraseña (8+ alfanuméricos): ")
+            pw = pwinput.pwinput("Contraseña (8+ alfanuméricos): ", mask='*')
             if len(pw) >= 8 and pw.isalnum():
                 break
             print("❌ Error: Mínimo 8 caracteres sin símbolos ❌")
@@ -143,7 +144,7 @@ def iniciar_sesion():
 
     # PASO 2: VALIDAR CONTRASEÑA (máximo 3 intentos)
     while intento_pw < max_intentos_pw:
-        pw = getpass.getpass(f"Contraseña [{intento_pw + 1}/{max_intentos_pw}]: ")
+        pw = pwinput.pwinput(f"Contraseña [{intento_pw + 1}/{max_intentos_pw}]: ", mask='*')
 
         # PASO 3: BUSCAR EN usuarios.json
         for u in cargar_datos(ARCHIVO_USUARIOS):

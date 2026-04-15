@@ -165,7 +165,7 @@ class InterfazPyClima:
     def consultar_datos(self):
         """Menú avanzado de consultas con filtros y opciones posteriores"""
         while True:
-            self._mostrar_encabezado("📊 CONSULTAR DATOS AVANZADO")
+            self._mostrar_encabezado("📊 CONSULTAR DATOS 📊 ")
             self.datos = self._cargar_datos() # Refrescar datos
             
             if not self.datos:
@@ -198,7 +198,7 @@ class InterfazPyClima:
             # -----------------------------------------
             if opcion in ["1", "2", "3"]:
                 print("\n" + "="*50)
-                print("OPCIONES POSTERIORES:")
+                self._mostrar_encabezado("OPCIONES POSTERIORES:")
                 print("1. Hacer otra consulta")
                 print("2. Volver al menú principal")
                 print("3. Salir del sistema")
@@ -455,7 +455,7 @@ class InterfazPyClima:
             print(f"{'='*50}")
             
             # --- SUBMENÚ DE NAVEGACIÓN Y FILTROS (Punto 7) ---
-            print("\nOPCIONES DE HISTÓRICO:")
+            self._mostrar_encabezado("OPCIONES DE HISTÓRICO:")
             print("1. 🔍 Aplicar filtros de búsqueda (Zona / Fecha / Usuario)")
             print("2. 📊 Generar gráfica general")
             print("3. ⬅️  Volver al menú principal")
@@ -476,7 +476,7 @@ class InterfazPyClima:
     def mostrar_panel_alertas(self):
         """Panel de alertas activas con filtros y navegación avanzada (Fase D)"""
         while True:
-            self._mostrar_encabezado("🚨 PANEL DE ALERTAS ACTIVAS")
+            self._mostrar_encabezado("🚨 PANEL DE ALERTAS 🚨")
             self.datos = self._cargar_datos() # Refrescar
             alertas_encontradas = []
 
@@ -505,8 +505,8 @@ class InterfazPyClima:
             ]
 
             # 3. Mostrar menú principal del panel de alertas
-            print(f"\n⚠️  Se detectaron {len(alertas_encontradas)} zonas con alertas activas.")
-            print("\nOPCIONES DEL PANEL:")
+            print(f"\n⚠️  Se detectaron {len(alertas_encontradas)} alertas en el histórico.")
+            self._mostrar_encabezado("OPCIONES DEL PANEL:")
             print("1. 📅 Ver alertas de hoy")
             print("2. 📋 Historial de alertas")
             print("3. 🔍 Filtrar por tipo de alerta")
@@ -559,7 +559,7 @@ class InterfazPyClima:
             print(f"   {i}. {zona}")
 
         try:
-            seleccion = int(input("\nSeleccione una zona (numero): ")) - 1
+            seleccion = int(input("\nSeleccione una zona (número): ")) - 1
             if 0 <= seleccion < len(self.zonas_validas):
                 zona_seleccionada = self.zonas_validas[seleccion]
                 self._ofrecer_grafica_zona(zona_seleccionada)
@@ -571,7 +571,7 @@ class InterfazPyClima:
     def _ofrecer_grafica_zona(self, zona):
         """Submenu de acciones para el distrito ya seleccionado."""
         while True:
-            print(f"\nACCIONES PARA {zona.upper()}:")
+            self._mostrar_encabezado(f"ACCIONES PARA {zona.upper()}:")
             print("1. Ver datos de este distrito")
             print("2. Generar gráfica de este distrito")
             print("3. Ver ambas")
@@ -595,19 +595,19 @@ class InterfazPyClima:
             if opcion == "4":
                 return
 
-            print("Opcion no valida.")
+            print("Opción no válida.")
 
     def menu_principal(self):
         while True:
-            self._mostrar_encabezado("SISTEMA PYCLIMA RESILIENTE v3.0")
-            print("1. Registrar Datos Climaticos")
-            print("2. Consultar Datos (Por Zona)")
-            print("3. Ver Historico (Todas las Zonas)")
-            print("4. Alertas Activas")
-            print("5. Salir")
+            self._mostrar_encabezado("SISTEMA PYCLIMA RESILIENTE v1.0")
+            print("1. 📋 Registrar Datos Climáticos")
+            print("2. 🔍 Consultar Datos")
+            print("3. 📚 Ver Histórico (Todas las Zonas)")
+            print("4. 📢 Alertas Activas")
+            print("5. 🔙 Salir")
             self._mostrar_separador()
 
-            opcion = input("Seleccione una opcion (1-5): ").strip()
+            opcion = input("Seleccione una opción (1-5): ").strip()
 
             if opcion == "1":
                 self.registrar_datos()
@@ -661,7 +661,7 @@ class InterfazPyClima:
 
     def _filtrar_y_mostrar_alertas(self, alertas_encontradas, lista_tipos):
         """Maneja el filtrado de alertas y lanza la navegación posterior"""
-        print("\n🚨 TIPOS DE ALERTA ACTUALMENTE ACTIVOS:")
+        self._mostrar_encabezado("🚨 TIPOS DE ALERTA 🚨")
         
         # 1. Subimos el diccionario de palabras clave aquí arriba
         palabras_clave = {
@@ -728,7 +728,7 @@ class InterfazPyClima:
     def _menu_post_alerta(self):
         """Submenú de navegación posterior exigido por el esquema"""
         while True:
-            print("\nOPCIONES POSTERIORES:")
+            self._mostrar_encabezado("OPCIONES POSTERIORES:")
             print("1. 🔙 Volver al panel de alertas")
             print("2. ⬅️  Volver al menú principal")
             print("3. 🚪 Salir del sistema")

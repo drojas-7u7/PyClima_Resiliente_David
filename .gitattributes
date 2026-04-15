@@ -1,0 +1,11 @@
+# 1. Tratar todos los archivos como texto y normalizar a LF al subir
+* text=auto
+
+# 2. Asegurar que archivos de código siempre usen LF en el repositorio
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+
+# 3. Evitar que archivos binarios (imágenes, etc.) se corrompan
+*.png binary
+*.jpg binary

@@ -1,24 +1,22 @@
-# --- Python ---
+# --- ENTORNOS VIRTUALES ---
+venv/
+env/
+ENV/
+.env/
+build/
+dist/
+
+# --- PYTHON (Archivos temporales y compilados) ---
 __pycache__/
+.pytest_cache/
+*.py[cod]
 *.py[cod]
 *$py.class
-.venv/
-venv/
+*.so
+.Python
 
-# --- Entornos de Conda (por si acaso) ---
-.conda/
-.anaconda/
-
-# --- Editores (VS Code) ---
-.vscode/
-.history/
-
-# --- Sistema Operativo (Linux/Ubuntu) ---
+# --- ARCHIVOS DE SISTEMA / IDE ---
 .DS_Store
-.directory
-*~
-*.swp
-
-# --- Herramientas de Test y Logs ---
-.pytest_cache/
-logs/
+Thumbs.db
+.vscode/
+.idea/
