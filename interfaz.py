@@ -230,7 +230,8 @@ class InterfazPyClima:
                 print(f"   🌡️  Temperatura: {temp}°C")
                 print(f"   💧 Humedad: {reg.get('humedad', 0)}%")
                 print(f"   💨 Viento: {reg.get('viento', 0)} km/h")
-                
+                print(f"   🌧️  Lluvia: {reg.get('lluvia', 0)} mm")
+
                 alertas_locales = self._analizar_alertas(temp, reg.get('humedad', 0), reg.get('viento', 0), reg.get('lluvia', 0))
                 for alerta in alertas_locales: 
                     print(f"   {alerta}")
