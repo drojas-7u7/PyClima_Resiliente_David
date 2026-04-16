@@ -62,7 +62,7 @@ Detección automática de **5 tipos principales de riesgos**:
 ## 🚀 Instalación (Rápida) 🚀 
 
 Clonar o descargar el repositorio Si usas Git, ejecuta en una nueva terminal:
-Bash git clone [https://github.com/majo100375-creator/huellitas_al_rescate.git] 
+Bash git clone (https://github.com/Mary1922/PyClima_Resiliente.git)
 cd PyClima_Resiliente
 
 ### 1. Crear entorno virtual
