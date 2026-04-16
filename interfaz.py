@@ -107,7 +107,7 @@ class InterfazPyClima:
                 
                 # Paso 3: Valida que no exista registro duplicado
                 if self._validar_duplicado(fecha, distrito):
-                    print(f"⚠️  Ya existe un registro para {distrito} en {fecha}")
+                    print(f"⚠️  Ya existe un registro para {distrito} en {fecha}. No se aceptan duplicados.")
                     if input("¿Desea ingresar datos nuevamente? (s/n): ").lower() != 's': return
                     continue
                 

@@ -9,7 +9,7 @@ def evaluar_alertas(datos_registro, umbrales): #Creamos función
     t_roja = umbrales.get("temp_max_roja", 40.0)
     t_naranja = umbrales.get("temp_max_naranja", 35.0)  #Evalúa condiciones climáticas, basadas en umbrales definidos en el sistema
     t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
-    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    t_emergencia_frio = umbrales.get("temp_min_critica", -5.0)
     v_max = umbrales.get("viento_max", 40)
     h_min = umbrales.get("humedad_min", 15)
     ll_naranja = umbrales.get("lluvia_naranja", 20.0)

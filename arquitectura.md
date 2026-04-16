@@ -906,7 +906,7 @@ NOTA: Las contraseñas se guardan como plain text (NO HASHEADAS)
         "temp_max_naranja": 35.0,      // Alerta naranja por calor
         "temp_max_roja": 40.0,          // Alerta roja por calor extremo
         "temp_min_alerta": 2.0,         // Alerta naranja por frío
-        "temp_min_emergencia": -2.0,    // Alerta roja por helada extrema
+        "temp_min_critica": -5.0,       // Alerta roja por helada extrema
         "viento_max": 40,               // Alerta naranja por viento
         "lluvia_naranja": 20.0,         // Alerta naranja por lluvia
         "lluvia_roja": 50.0,            // Alerta roja por lluvia torrencial
@@ -940,7 +940,7 @@ def evaluar_alertas(datos_registro, umbrales):
     t_roja = umbrales.get("temp_max_roja", 40.0)
     t_naranja = umbrales.get("temp_max_naranja", 35.0)
     t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
-    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    t_emergencia_frio = umbrales.get("temp_min_critica", -5.0)
     v_max = umbrales.get("viento_max", 40)
     h_min = umbrales.get("humedad_min", 15)
     ll_naranja = umbrales.get("lluvia_naranja", 20.0)
@@ -1067,7 +1067,7 @@ def evaluar_alertas(datos_registro, umbrales):
     t_roja = umbrales.get("temp_max_roja", 40.0)
     t_naranja = umbrales.get("temp_max_naranja", 35.0)
     t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
-    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    t_emergencia_frio = umbrales.get("temp_min_critica", -5.0)
     v_max = umbrales.get("viento_max", 40)
     h_min = umbrales.get("humedad_min", 15)
     ll_naranja = umbrales.get("lluvia_naranja", 20.0)

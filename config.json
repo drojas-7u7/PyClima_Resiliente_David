@@ -26,7 +26,6 @@
     "temp_max_naranja": 35.0,
     "temp_max_roja": 40.0,
     "temp_min_alerta": 2.0,
-    "temp_min_emergencia": -2.0,
     "temp_min_critica": -5.0,
     "viento_max": 40,
     "lluvia_naranja": 20.0,
