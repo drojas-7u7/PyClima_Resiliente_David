@@ -984,7 +984,7 @@ if temp <= t_alerta_frio:  # <= 2°C
     )
 
 # ALERTA ROJA (Helada extrema)
-if temp <= t_emergencia_frio:  # <= -2°C
+if temp <= t_emergencia_frio:  # <= -5°C
     alertas_activas.append(
         f"🔴 PELIGRO DE HELADA: Alerta Roja. 
            Frío extremo ({temp}°C). Riesgo infraestructuras."

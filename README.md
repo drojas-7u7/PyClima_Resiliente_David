@@ -130,7 +130,7 @@ t_roja = umbrales.get("temp_max_roja", 40.0)
 
 UMBRAL_TEMP_CALOR_NARANJA = 35.0      # °C
 UMBRAL_TEMP_FRIO_NARANJA = 2.0      # °C
-UMBRAL_TEMP_FRIO_ROJA = -2.0      # °C
+UMBRAL_TEMP_FRIO_ROJA = -5.0      # °C
 UMBRAL_VIENTO_ALTO = 40.0     # km/h
 UMBRAL_HUMEDAD_BAJA = 15.0    # %
 UMBRAL_LLUVIA_NARANJA = 20.0  # mm
