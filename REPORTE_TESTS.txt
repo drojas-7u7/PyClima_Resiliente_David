@@ -132,7 +132,7 @@ COBERTURA: TODAS LAS FUNCIONALIDADES PROBADAS
 
 Cambios implementados y validados:
 1. Validacion de fechas (no futuras)
-2. Alertas (minimo 5 de cada tipo)
+2. Alertas (minimo 5 test de cada alerta de las establecidas)
 3. Media de frio y calor en graficas
 4. Autenticacion separada (usuarios vs empleados)
 5. 104 registros (julio + diciembre con clima apropiado)

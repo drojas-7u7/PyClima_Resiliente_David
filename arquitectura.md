@@ -984,7 +984,7 @@ if temp <= t_alerta_frio:  # <= 2°C
     )
 
 # ALERTA ROJA (Helada extrema)
-if temp <= t_emergencia_frio:  # <= -2°C
+if temp <= t_emergencia_frio:  # <= -5°C
     alertas_activas.append(
         f"🔴 PELIGRO DE HELADA: Alerta Roja. 
            Frío extremo ({temp}°C). Riesgo infraestructuras."
@@ -1067,7 +1067,7 @@ def evaluar_alertas(datos_registro, umbrales):
     t_roja = umbrales.get("temp_max_roja", 40.0)
     t_naranja = umbrales.get("temp_max_naranja", 35.0)
     t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
-    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    t_emergencia_frio = umbrales.get("temp_min_critica", -5.0)
     v_max = umbrales.get("viento_max", 40)
     h_min = umbrales.get("humedad_min", 15)
     ll_naranja = umbrales.get("lluvia_naranja", 20.0)

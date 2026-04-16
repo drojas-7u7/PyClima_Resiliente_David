@@ -125,7 +125,7 @@ Está en `alertas.py`:
 t_roja = umbrales.get("temp_max_roja", 40.0)
     t_naranja = umbrales.get("temp_max_naranja", 35.0)  #Evalúa condiciones climáticas, basadas en umbrales definidos en el sistema
     t_alerta_frio = umbrales.get("temp_min_alerta", 2.0)
-    t_emergencia_frio = umbrales.get("temp_min_emergencia", -2.0)
+    t_emergencia_frio = umbrales.get("temp_min_crítica", -5.0)
     v_max = umbrales.get("viento_max", 40)
     h_min = umbrales.get("humedad_min", 15)
     ll_naranja = umbrales.get("lluvia_naranja", 20.0)
@@ -133,7 +133,7 @@ t_roja = umbrales.get("temp_max_roja", 40.0)
 
 UMBRAL_TEMP_CALOR_NARANJA = 35.0      # °C
 UMBRAL_TEMP_FRIO_NARANJA = 2.0      # °C
-UMBRAL_TEMP_FRIO_ROJA = -2.0      # °C
+UMBRAL_TEMP_FRIO_ROJA = -5.0      # °C
 UMBRAL_VIENTO_ALTO = 40.0     # km/h
 UMBRAL_HUMEDAD_BAJA = 15.0    # %
 UMBRAL_LLUVIA_NARANJA = 20.0  # mm
